@@ -88,132 +88,82 @@ const Home = () => {
             </Link>
           </div>
 
-          <ul className="mt-2 grid gap-2 text-sm text-softSlate dark:text-cream/90 sm:grid-cols-2">
-            <li className="flex items-start gap-2">
-              <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-accent" />
-              <span>Lexend font, softer colors, and clear spacing for calmer reading.</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-accent" />
-              <span>Upload handwriting or notes — backend coming soon, UI ready today.</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-accent" />
-              <span>Audio-first experience with space for syllable highlights and TTS.</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-accent" />
-              <span>Progress calendar designed like a gentle streak tracker—not a pressure meter.</span>
-            </li>
-          </ul>
+         
         </section>
 
-        <section className="flex flex-1 flex-col gap-4 items-end">
-          <div className="w-full max-w-lg">
+        <section className="flex flex-1 flex-col gap-4 items-stretch">
+          <div className="w-full">
             <ProgressCalendar />
-          </div>
-
-          <div className="dys-surface relative overflow-hidden p-4 sm:p-5">
-            <div className="mb-3 flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold text-softSlate dark:text-cream">
-                Today&apos;s reading coach
-              </p>
-              <span className="rounded-full bg-accentSoft px-3 py-1 text-xs font-medium text-softSlate dark:bg-accentSoft/90">
-                Demo mode
-              </span>
-            </div>
-
-            <div className="space-y-3 rounded-2xl bg-cream/70 p-3 text-sm text-softSlate shadow-inner dark:bg-[#272A38] dark:text-cream/90">
-              <div className="flex items-start gap-2">
-                <div className="mt-1 h-2 w-2 rounded-full bg-accent" />
-                <p>
-                  &ldquo;We&apos;ll read this in small, easy steps. You can listen, follow the words,
-                  and pause whenever you need.&rdquo;
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2 text-xs">
-                <button
-                  type="button"
-                  className="dys-focus inline-flex items-center gap-1 rounded-full bg-softSlate px-3 py-1.5 font-medium text-cream shadow-sm transition hover:bg-softSlate/90"
-                >
-                  ▶ Play sample audio
-                </button>
-                <button
-                  type="button"
-                  className="dys-focus inline-flex items-center gap-1 rounded-full border border-dysGray/30 bg-white/80 px-3 py-1.5 font-medium text-softSlate transition hover:bg-cream/80 dark:border-white/25 dark:bg-softSlate/70 dark:text-cream"
-                >
-                  Aa Slow &amp; spaced text
-                </button>
-              </div>
-            </div>
-
-            <p className="mt-3 text-xs text-dysGray/80 dark:text-cream/80">
-              This is a visual preview only. Future backend will plug in real handwriting analysis,
-              simplified text, and quizzes.
-            </p>
           </div>
         </section>
       </main>
 
-      <section
-        id="how-it-works"
-        className="border-t border-dysGray/15 bg-cream/95 py-8 text-sm text-softSlate dark:border-white/10 dark:bg-[#1E2029] dark:text-cream/90"
-      >
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-left text-lg font-semibold text-ink dark:text-cream">
-            How DysCover AI will work
-          </h2>
-          <ol className="mt-3 grid gap-3 sm:grid-cols-3">
-            <li className="rounded-2xl bg-white/80 p-3 shadow-sm dark:bg-softSlate/80">
-              <p className="font-semibold">1. Upload</p>
-              <p className="mt-1 text-xs sm:text-sm">
-                Teachers or parents share handwriting or notes. The UI keeps the flow calm and
-                predictable.
+      <section className="px-4 pb-12 sm:px-6">
+        <div className="mx-auto max-w-lg dys-surface relative overflow-hidden p-4 sm:p-5">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-sm font-semibold text-softSlate dark:text-cream">
+              Today&apos;s reading coach
+            </p>
+            <span className="rounded-full bg-accentSoft px-3 py-1 text-xs font-medium text-softSlate dark:bg-accentSoft/90">
+              Demo mode
+            </span>
+          </div>
+
+          <div className="space-y-3 rounded-2xl bg-cream/70 p-3 text-sm text-softSlate shadow-inner dark:bg-[#272A38] dark:text-cream/90">
+            <div className="flex items-start gap-2">
+              <div className="mt-1 h-2 w-2 rounded-full bg-accent" />
+              <p>
+                &ldquo;We&apos;ll read this in small, easy steps. You can listen, follow the words,
+                and pause whenever you need.&rdquo;
               </p>
-            </li>
-            <li className="rounded-2xl bg-white/80 p-3 shadow-sm dark:bg-softSlate/80">
-              <p className="font-semibold">2. Adapt</p>
-              <p className="mt-1 text-xs sm:text-sm">
-                Backend (coming soon) will simplify text, space syllables, and prepare gentle audio.
-              </p>
-            </li>
-            <li className="rounded-2xl bg-white/80 p-3 shadow-sm dark:bg-softSlate/80">
-              <p className="font-semibold">3. Track calmly</p>
-              <p className="mt-1 text-xs sm:text-sm">
-                The progress calendar and dashboard show streaks without pressure, focusing on
-                confidence.
-              </p>
-            </li>
-          </ol>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <button
+                type="button"
+                className="dys-focus inline-flex items-center gap-1 rounded-full bg-softSlate px-3 py-1.5 font-medium text-cream shadow-sm transition hover:bg-softSlate/90"
+              >
+                ▶ Play sample audio
+              </button>
+              <button
+                type="button"
+                className="dys-focus inline-flex items-center gap-1 rounded-full border border-dysGray/30 bg-white/80 px-3 py-1.5 font-medium text-softSlate transition hover:bg-cream/80 dark:border-white/25 dark:bg-softSlate/70 dark:text-cream"
+              >
+                Aa Slow &amp; spaced text
+              </button>
+            </div>
+          </div>
+
+          <p className="mt-3 text-xs text-dysGray/80 dark:text-cream/80">
+            This is a visual preview only. Future backend will plug in real handwriting analysis,
+            simplified text, and quizzes.
+          </p>
         </div>
       </section>
 
-      <section
-        id="accessibility"
-        className="border-t border-dysGray/15 bg-cream/90 py-8 text-sm text-softSlate dark:border-white/10 dark:bg-[#181a22] dark:text-cream/90"
-      >
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <h2 className="text-left text-lg font-semibold text-ink dark:text-cream">
-            Accessibility &amp; calm design choices
-          </h2>
-          <ul className="mt-3 space-y-1 text-xs sm:text-sm">
-            <li>• Lexend font and extra line spacing to reduce visual crowding.</li>
-            <li>• Soft cream and slate instead of harsh black/white contrasts.</li>
-            <li>• Left-aligned copy and simple layouts to lower cognitive load.</li>
-            <li>• Minimal motion, clear focus outlines, and large click targets.</li>
-          </ul>
-        </div>
-      </section>
+      <footer className="mt-0 bg-[#121218] py-10 text-cream">
+        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:flex-row sm:items-start sm:justify-between sm:px-6">
+          <div className="max-w-3xl space-y-3">
+            <p className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              DYSCOVER
+            </p>
+            <p className="text-sm leading-relaxed text-cream/85 sm:text-base">
+              DysCover AI is an inclusive learning platform that detects early signs of dyslexia and
+              transforms educational content into accessible, adaptive formats to improve reading,
+              comprehension, and confidence.
+            </p>
+          </div>
 
-      <footer className="mt-4 border-t border-dysGray/15 bg-cream/95 py-4 text-xs text-dysGray/80 dark:border-white/10 dark:bg-[#1E2029]/95 dark:text-cream/80">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>Made for AISSMS DysCover AI – early dyslexia support demo UI.</p>
-          <div className="flex flex-wrap items-center gap-3">
-            <a href="#how-it-works" className="underline-offset-4 hover:underline">
-              How it works
-            </a>
-            <a href="#accessibility" className="underline-offset-4 hover:underline">
-              Accessibility &amp; calm design
+          <div className="space-y-2 text-right sm:text-left sm:min-w-[220px]">
+            <p className="text-sm font-semibold text-cream/90">Still have questions?</p>
+            <p className="text-xs text-cream/70">Email us at</p>
+            <a
+              href="mailto:bhavsingh2911@gmail.com"
+              className="inline-flex items-center justify-end gap-2 text-sm font-semibold text-white sm:justify-start"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cream/10 text-lg">
+                ✉
+              </span>
+              <span>bhavsingh2911@gmail.com</span>
             </a>
           </div>
         </div>
