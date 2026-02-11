@@ -20,48 +20,33 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-cream/90 text-ink dark:bg-[#1E2029] dark:text-cream">
-      <header className="border-b border-dysGray/15 bg-cream/90 px-4 py-3 sm:px-6 dark:border-white/10 dark:bg-[#1E2029]/95">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
+    <div className="flex min-h-screen flex-col bg-[#050816] text-cream">
+      <header className="border-b border-white/10 bg-[#050816]/95 px-4 py-4 sm:px-8">
+        <div className="mx-auto flex max-w-6xl items-center gap-2">
           <Link to="/" className="flex items-center gap-2 dys-focus">
             <img
               src="/FAVICON_DYSCOVER.png"
               alt="DYSCOVER logo"
-              className="h-8 w-8 rounded-xl object-contain sm:h-9 sm:w-9"
+              className="h-9 w-9 rounded-xl object-contain sm:h-10 sm:w-10"
             />
             <span className="text-sm font-semibold tracking-tight sm:text-base">DYSCOVER</span>
           </Link>
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-5xl flex-1 items-center px-4 py-10 sm:px-6">
-        <div className="grid w-full gap-8 lg:grid-cols-[minmax(0,1.1fr),minmax(0,0.9fr)]">
-          <section className="hidden flex-col justify-center gap-4 text-softSlate dark:text-cream/90 lg:flex">
-            <p className="inline-flex max-w-xs items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-softSlate shadow-sm dark:bg-softSlate/70 dark:text-cream">
-              <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-accent/90 text-[0.65rem] text-white">
-                ●
-              </span>
-              Calm, low-stress login for learners and teachers
-            </p>
-            <h1 className="text-3xl font-semibold tracking-tight text-ink dark:text-cream">
-              Welcome back to a calmer reading journey.
-            </h1>
-            <p className="max-w-md text-sm leading-relaxed">
-              Use this space to step into DysCover, where reading support, gentle tracking, and
-              accessible layouts are designed for dyslexic learners in real classrooms.
-            </p>
-          </section>
-
-          <section className="dys-surface w-full max-w-md justify-self-end p-5 sm:p-6">
-            <h2 className="text-xl font-semibold tracking-tight text-ink dark:text-cream">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 items-center px-4 py-10 sm:px-8">
+        <div className="grid w-full items-center gap-12 lg:grid-cols-2">
+          {/* Left: login card */}
+          <section className="w-full max-w-lg rounded-3xl border border-white/10 bg-[#050814] p-7 text-cream shadow-2xl sm:p-8">
+            <h2 className="text-2xl font-semibold tracking-tight text-cream sm:text-3xl">
               Log in
             </h2>
-            <p className="mt-1 text-xs text-dysGray/80 dark:text-cream/75">
+            <p className="mt-1 text-xs text-cream/70">
               Choose your role, then enter your details. This is a demo – passwords are not stored.
             </p>
 
             <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
-              <div className="flex gap-2 text-xs font-medium text-softSlate dark:text-cream/90">
+              <div className="flex gap-2 text-xs font-medium text-cream/90">
                 {['teacher', 'parent', 'student'].map((option) => {
                   const isActive = role === option;
                   const label = option.charAt(0).toUpperCase() + option.slice(1);
@@ -72,8 +57,8 @@ const Login = () => {
                       onClick={() => setRole(option)}
                       className={`flex-1 rounded-full px-3 py-1.5 transition dys-focus ${
                         isActive
-                          ? 'bg-softSlate text-cream shadow-sm'
-                          : 'border border-dysGray/30 bg-white/80 text-softSlate dark:border-white/25 dark:bg-softSlate/70 dark:text-cream'
+                          ? 'bg-white text-[#050816] shadow-sm'
+                          : 'border border-white/15 bg-transparent text-cream/80 hover:border-white/30'
                       }`}
                     >
                       {label}
@@ -83,24 +68,24 @@ const Login = () => {
               </div>
 
               <label className="block text-sm">
-                <span className="text-softSlate dark:text-cream">Email</span>
+                <span className="text-cream">Email</span>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-dysGray/30 bg-white/90 px-3 py-2 text-sm text-softSlate shadow-sm outline-none placeholder:text-dysGray/60 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-cream dark:border-white/20 dark:bg-softSlate/70 dark:text-cream dark:focus-visible:ring-offset-[#1E2029]"
+                  className="mt-1 w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-cream shadow-sm outline-none placeholder:text-cream/40 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]"
                   placeholder="you@example.com"
                   autoComplete="email"
                 />
               </label>
 
               <label className="block text-sm">
-                <span className="text-softSlate dark:text-cream">Password</span>
+                <span className="text-cream">Password</span>
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1 w-full rounded-xl border border-dysGray/30 bg-white/90 px-3 py-2 text-sm text-softSlate shadow-sm outline-none placeholder:text-dysGray/60 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-cream dark:border-white/20 dark:bg-softSlate/70 dark:text-cream dark:focus-visible:ring-offset-[#1E2029]"
+                  className="mt-1 w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-cream shadow-sm outline-none placeholder:text-cream/40 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-[#050816]"
                   placeholder="Enter a secure password"
                   autoComplete="current-password"
                 />
@@ -108,17 +93,62 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-accent/90 dys-focus"
+                className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-accent/90 dys-focus"
               >
                 Continue as {role}
               </button>
 
               {message && (
-                <p className="mt-2 text-xs text-dysGray/80 dark:text-cream/80" role="status">
+                <p className="mt-2 text-xs text-cream/75" role="status">
                   {message}
                 </p>
               )}
             </form>
+          </section>
+
+          {/* Right: hero panel with blur + favicon */}
+          <section className="relative hidden h-full min-h-[360px] flex-col justify-center gap-5 text-left text-cream lg:flex">
+            {/* Blurred glow background */}
+            <div className="pointer-events-none absolute inset-0">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <img
+                  src="/FAVICON_DYSCOVER.png"
+                  alt="DYSCOVER background mark"
+                  className="h-64 w-64 opacity-15 blur-md"
+                />
+              </div>
+              <div className="absolute -right-10 top-10 h-64 w-64 rounded-full bg-gradient-to-tr from-orange-400/45 via-amber-300/30 to-emerald-300/20 blur-2xl" />
+              <div className="absolute right-16 bottom-8 h-52 w-52 rounded-full bg-gradient-to-tr from-emerald-300/18 via-sky-400/22 to-orange-400/26 blur-2xl" />
+            </div>
+
+            <div className="relative z-10 flex items-center gap-4">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5 ring-1 ring-white/15 shadow-lg">
+                <img
+                  src="/FAVICON_DYSCOVER.png"
+                  alt="DYSCOVER mark"
+                  className="h-10 w-10 rounded-xl object-contain"
+                />
+              </div>
+              <div className="space-y-1">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cream/70">
+                  Welcome to DYSCOVER
+                </p>
+                <p className="text-sm text-cream/70">
+                  Calm support for dyslexic learners, teachers, and families.
+                </p>
+              </div>
+            </div>
+
+            <div className="relative z-10 mt-4 space-y-3">
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                Welcome back.
+              </h1>
+              <p className="max-w-md text-sm leading-relaxed text-cream/80">
+                DYSCOVER turns dense notes into calmer, audio‑first reading experiences. It tracks
+                practice gently, highlights progress without pressure, and keeps every screen soft
+                and predictable for dyslexic learners.
+              </p>
+            </div>
           </section>
         </div>
       </main>

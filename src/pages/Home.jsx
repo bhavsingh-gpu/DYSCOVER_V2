@@ -5,8 +5,8 @@ import ThemeToggle from '../components/ThemeToggle.jsx';
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-cream/90 text-ink transition-colors dark:bg-[#1E2029] dark:text-cream">
-      <header className="sticky top-0 z-20 border-b border-dysGray/15 bg-gradient-to-b from-cream/95 to-cream/85 backdrop-blur-md dark:border-white/10 dark:from-[#1E2029]/95 dark:to-[#242736]">
+    <div className="min-h-screen bg-[#f6f1e6] text-ink transition-colors dark:bg-[#1E2029] dark:text-cream">
+      <header className="sticky top-0 z-20 border-b border-dysGray/20 bg-gradient-to-b from-[#fbf7ee] to-[#e6dcc8] shadow-sm backdrop-blur-md dark:border-white/10 dark:from-[#1E2029]/95 dark:to-[#242736]">
         <nav className="flex w-full items-center justify-between gap-6 px-4 py-4 sm:px-6 sm:py-5">
           <Link to="/" className="flex items-center gap-3 dys-focus">
             <img
@@ -55,8 +55,8 @@ const Home = () => {
       </header>
 
       <main className="flex w-full flex-col gap-10 px-4 pb-16 pt-8 sm:px-6 sm:pt-12 lg:flex-row lg:items-stretch">
-        <section className="flex flex-1 flex-col justify-center gap-6 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-dysGray/20 bg-white/80 px-3 py-1 text-xs font-medium text-softSlate shadow-sm dark:border-white/20 dark:bg-softSlate/70 dark:text-cream">
+        <section className="flex flex-1 flex-col justify-center gap-7 max-w-4xl pr-2 lg:pr-10">
+          <div className="inline-flex items-center gap-2 rounded-full border border-dysGray/25 bg-[#fdf7ec] px-3 py-1 text-xs font-medium text-softSlate shadow-sm dark:border-white/20 dark:bg-softSlate/70 dark:text-cream">
             <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-accent/90 text-[0.65rem] text-white">
               ●
             </span>
@@ -88,9 +88,9 @@ const Home = () => {
       <section className="px-4 pb-10 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-3">
           {/* Daily goal card */}
-          <div className="group relative flex flex-col justify-between rounded-3xl border border-slate-700/60 bg-[#111118] p-6 text-cream shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)]">
+          <div className="group relative flex flex-col justify-between rounded-3xl border border-dysGray/30 bg-[#f5efe1] p-6 text-softSlate shadow-md transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.35)] dark:border-slate-700/60 dark:bg-[#111118] dark:text-cream dark:shadow-lg/40">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500/15">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#1f2937]/90 dark:bg-orange-500/25">
                 <img
                   src="/ICONS/DAILY_GOAL.png"
                   alt="Daily goal icon"
@@ -98,20 +98,20 @@ const Home = () => {
                 />
               </div>
               <div>
-                <p className="text-sm font-medium text-cream/70">Daily goal</p>
-                <p className="text-lg font-semibold text-white">Start today&apos;s calm reading</p>
+                <p className="text-sm font-medium text-softSlate/80 dark:text-cream/70">Daily goal</p>
+                <p className="text-lg font-semibold text-ink dark:text-white">Start today&apos;s calm reading</p>
               </div>
             </div>
-            <div className="mt-6 h-1.5 w-full rounded-full bg-cream/10">
+            <div className="mt-6 h-1.5 w-full rounded-full bg-[#e3d7c3]">
               <div className="h-full w-1/5 rounded-full bg-orange-400 transition-all duration-200 group-hover:w-2/5" />
             </div>
           </div>
 
           {/* Your progress card */}
-          <div className="group relative flex flex-col justify-between rounded-3xl border border-slate-700/60 bg-[#111118] p-6 text-cream shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)]">
+          <div className="group relative flex flex-col justify-between rounded-3xl border border-dysGray/30 bg-[#f5efe1] p-6 text-softSlate shadow-md transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.35)] dark:border-slate-700/60 dark:bg-[#111118] dark:text-cream dark:shadow-lg/40">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500/15">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#1f2937]/90 dark:bg-orange-500/25">
                   <img
                     src="/ICONS/PROGRESS_ARROW.png"
                     alt="Progress icon"
@@ -119,22 +119,22 @@ const Home = () => {
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-cream/70">Your progress</p>
-                  <p className="mt-1 text-3xl font-semibold text-white">0%</p>
-                  <p className="text-xs text-cream/70">Calm reading completed</p>
+                  <p className="text-sm font-medium text-softSlate/80 dark:text-cream/70">Your progress</p>
+                  <p className="mt-1 text-3xl font-semibold text-ink dark:text-white">0%</p>
+                  <p className="text-xs text-softSlate/70 dark:text-cream/70">Calm reading completed</p>
                 </div>
               </div>
             </div>
-            <div className="mt-6 h-1.5 w-full rounded-full bg-cream/10">
+            <div className="mt-6 h-1.5 w-full rounded-full bg-[#e3d7c3]">
               <div className="h-full w-0 rounded-full bg-orange-400 group-hover:w-1/4 transition-all duration-200" />
             </div>
           </div>
 
           {/* Recommended card */}
-          <div className="group relative flex flex-col rounded-3xl border border-slate-700/60 bg-[#111118] p-6 text-cream shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)]">
+          <div className="group relative flex flex-col rounded-3xl border border-dysGray/30 bg-[#f5efe1] p-6 text-softSlate shadow-md transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.35)] dark:border-slate-700/60 dark:bg-[#111118] dark:text-cream dark:shadow-lg/40">
             <div className="mb-4 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500/15">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#1f2937]/90 dark:bg-orange-500/25">
                   <img
                     src="/ICONS/STAR_RECOMMENDED.png"
                     alt="Recommended icon"
@@ -142,43 +142,43 @@ const Home = () => {
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-cream/70">Recommended</p>
-                  <p className="text-base font-semibold text-white">
+                  <p className="text-sm font-medium text-softSlate/80 dark:text-cream/70">Recommended</p>
+                  <p className="text-base font-semibold text-ink dark:text-white">
                     Start with this gentle practice
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-auto rounded-2xl bg-black/40 px-4 py-3 text-sm">
-              <p className="text-xs font-medium text-cream/60">Level</p>
-              <p className="mt-1 text-base font-semibold text-white">Calm reading · Easy</p>
+            <div className="mt-auto rounded-2xl bg-[#ebe1cf] px-4 py-3 text-sm dark:bg-black/40">
+              <p className="text-xs font-medium text-softSlate/80 dark:text-cream/60">Level</p>
+              <p className="mt-1 text-base font-semibold text-ink dark:text-white">Calm reading · Easy</p>
             </div>
           </div>
 
           {/* Quick actions card */}
-          <div className="group relative col-span-1 rounded-3xl border border-slate-700/60 bg-[#111118] p-6 text-cream shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)] lg:col-span-2">
+          <div className="group relative col-span-1 rounded-3xl border border-dysGray/30 bg-[#f5efe1] p-6 text-softSlate shadow-md transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.35)] lg:col-span-2 dark:border-slate-700/60 dark:bg-[#111118] dark:text-cream dark:shadow-lg/40">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500/15">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#1f2937]/90 dark:bg-orange-500/25">
                 <img
                   src="/ICONS/BOLT_QUICK_ACTIONS.png"
                   alt="Quick actions icon"
                   className="h-6 w-6 object-contain"
                 />
               </div>
-              <p className="text-lg font-semibold text-white">Quick actions</p>
+              <p className="text-lg font-semibold text-ink dark:text-white">Quick actions</p>
             </div>
 
             <div className="space-y-3 text-sm">
               <button
                 type="button"
-                className="flex w-full items-center justify-between rounded-2xl bg-black/40 px-4 py-3 text-left text-cream/90 transition hover:bg-black/70 dys-focus"
+                className="flex w-full items-center justify-between rounded-2xl bg-[#ebe1cf] px-4 py-3 text-left text-softSlate/90 transition hover:bg-[#e2d5c0] dys-focus dark:bg-black/40 dark:text-cream/90 dark:hover:bg-black/70"
               >
                 <span>Browse all practice stories</span>
               </button>
               <button
                 type="button"
-                className="flex w-full items-center justify-between rounded-2xl bg-black/40 px-4 py-3 text-left text-cream/90 transition hover:bg-black/70 dys-focus"
+                className="flex w-full items-center justify-between rounded-2xl bg-[#ebe1cf] px-4 py-3 text-left text-softSlate/90 transition hover:bg-[#e2d5c0] dys-focus dark:bg-black/40 dark:text-cream/90 dark:hover:bg-black/70"
               >
                 <span>Upload a worksheet</span>
               </button>

@@ -73,7 +73,7 @@ const ProgressCalendar = () => {
   return (
     <section
       aria-label="Reading practice calendar for the current month"
-      className="relative dys-surface flex flex-col gap-5 rounded-3xl border border-slate-700/60 bg-gradient-to-br from-cream/80 via-white/90 to-accentSoft/40 p-6 text-softSlate shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)] sm:p-7 dark:from-[#262938] dark:via-[#262938] dark:to-softSlate/60 dark:text-cream"
+      className="relative dys-surface flex flex-col gap-5 rounded-3xl border border-dysGray/30 bg-gradient-to-br from-[#f8f1e4] via-[#f3ebdd] to-[#ffe4c7] p-6 text-softSlate shadow-md transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.35)] sm:p-7 dark:border-slate-700/60 dark:from-[#262938] dark:via-[#262938] dark:to-softSlate/60 dark:text-cream dark:shadow-lg/40"
     >
       <header className="flex items-baseline justify-between gap-3">
         <div>
@@ -162,6 +162,7 @@ const ProgressCalendar = () => {
                     setHoveredKey(null);
                     clearTooltip();
                   }}
+                  title={label}
                   className={`flex h-10 sm:h-12 w-full items-center justify-start rounded-xl border border-dysGray/20 px-3 text-sm font-medium transition-transform dys-focus hover:scale-[1.03] ${levelClasses[level]} ${
                     isSelected ? 'ring-2 ring-accent ring-offset-[1px]' : ''
                   } dark:border-white/15`}
@@ -182,7 +183,7 @@ const ProgressCalendar = () => {
 
       {tooltip && (
         <div
-          className="pointer-events-none fixed z-30 max-w-xs rounded-xl bg-white/95 px-3 py-2 text-xs text-softSlate shadow-lg ring-1 ring-dysGray/15 dark:bg-[#1F2230] dark:text-cream dark:ring-white/10"
+          className="pointer-events-none fixed z-50 max-w-xs rounded-xl bg-white/95 px-3 py-2 text-xs text-softSlate shadow-lg ring-1 ring-dysGray/15 dark:bg-[#1F2230] dark:text-cream dark:ring-white/10"
           style={{ left: tooltip.x, top: tooltip.y }}
         >
           <p className="font-semibold">{tooltip.label}</p>
