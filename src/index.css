@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global dyslexia-aware typography + theming */
+@layer base {
+  html {
+    font-family: theme('fontFamily.lexend');
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-ink;
+    /* Slightly increased line-height improves readability */
+    line-height: 1.7;
+  }
+
+  body.dark {
+    background-color: #252733;
+    color: #fdfbd4;
+  }
+}
+
+@layer components {
+  .dys-surface {
+    @apply rounded-2xl border border-dysGray/10 bg-white/80 shadow-sm;
+  }
+
+  .dark .dys-surface {
+    @apply border-white/10 bg-softSlate/60 shadow-md;
+  }
+
+  .dys-focus {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
+  }
+
+  .dark .dys-focus {
+    @apply focus-visible:ring-offset-transparent;
+  }
+}
+
+

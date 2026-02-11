@@ -1,0 +1,30 @@
+🔹 DysCover AI — Product Description
+
+DysCover AI is an AI-powered inclusive learning platform that detects early signs of dyslexia and adapts educational content to remove reading barriers for affected students.
+
+Teachers/parents upload handwriting samples or notes → the system screens for dyslexia indicators and transforms materials into dyslexia-friendly formats: simplified text, syllable-highlighted views, paced audio narration, and adaptive quizzes.
+
+Instead of forcing students to struggle with decoding, DysCover adapts the content and experience to the learner — turning frustration into comprehension and confidence.
+
+How it works
+• Upload handwriting photo or text/notes/PDF
+• Gemini AI analyzes for dyslexia markers (reversals, inconsistent spacing, etc.) with confidence score
+• Content processed in cloud: simplified, syllable-split, TTS-ready
+• Student accesses via personalized dashboard (audio primary, visual aids, font adjustments)
+• Quick quiz after session → AI refines next adaptation (e.g., slower pace, more audio)
+• Progress tracked & shared with teachers/parents
+
+Use Cases
+Helps:
+• Undiagnosed dyslexic students (common in India, often overlooked)
+• Slow learners with phonological challenges
+• Teachers needing quick screening + remedial tools
+• Parents supporting home learning
+
+All from a single, accessible web platform.
+
+Purpose
+To bridge the massive diagnosis & support gap for dyslexia — one of the most prevalent yet under-resourced learning disabilities — using affordable AI for true educational equity.
+
+Impact
+DysCover acts as an early-intervention layer for millions of Indian students: faster detection, better comprehension, reduced dropout risk, and scalable inclusion in classrooms.
