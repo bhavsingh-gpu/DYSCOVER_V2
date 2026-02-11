@@ -88,10 +88,14 @@ const Home = () => {
       <section className="px-4 pb-10 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-3">
           {/* Daily goal card */}
-          <div className="dys-surface relative flex flex-col justify-between rounded-3xl bg-[#111118] p-6 text-cream shadow-lg/40">
+          <div className="group relative flex flex-col justify-between rounded-3xl border border-slate-700/60 bg-[#111118] p-6 text-cream shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)]">
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accentSoft/30 text-2xl">
-                🎯
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500/15">
+                <img
+                  src="/ICONS/DAILY_GOAL.png"
+                  alt="Daily goal icon"
+                  className="h-6 w-6 object-contain"
+                />
               </div>
               <div>
                 <p className="text-sm font-medium text-cream/70">Daily goal</p>
@@ -99,30 +103,43 @@ const Home = () => {
               </div>
             </div>
             <div className="mt-6 h-1.5 w-full rounded-full bg-cream/10">
-              <div className="h-full w-1/5 rounded-full bg-accent" />
+              <div className="h-full w-1/5 rounded-full bg-orange-400 transition-all duration-200 group-hover:w-2/5" />
             </div>
           </div>
 
           {/* Your progress card */}
-          <div className="dys-surface relative flex flex-col justify-between rounded-3xl bg-[#111118] p-6 text-cream shadow-lg/40">
+          <div className="group relative flex flex-col justify-between rounded-3xl border border-slate-700/60 bg-[#111118] p-6 text-cream shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)]">
             <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-sm font-medium text-cream/70">Your progress</p>
-                <p className="mt-2 text-3xl font-semibold text-white">0%</p>
-                <p className="text-xs text-cream/70">Calm reading completed</p>
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500/15">
+                  <img
+                    src="/ICONS/PROGRESS_ARROW.png"
+                    alt="Progress icon"
+                    className="h-6 w-6 object-contain"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-cream/70">Your progress</p>
+                  <p className="mt-1 text-3xl font-semibold text-white">0%</p>
+                  <p className="text-xs text-cream/70">Calm reading completed</p>
+                </div>
               </div>
             </div>
             <div className="mt-6 h-1.5 w-full rounded-full bg-cream/10">
-              <div className="h-full w-0 rounded-full bg-accent" />
+              <div className="h-full w-0 rounded-full bg-orange-400 group-hover:w-1/4 transition-all duration-200" />
             </div>
           </div>
 
           {/* Recommended card */}
-          <div className="dys-surface relative flex flex-col rounded-3xl bg-[#111118] p-6 text-cream shadow-lg/40">
+          <div className="group relative flex flex-col rounded-3xl border border-slate-700/60 bg-[#111118] p-6 text-cream shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)]">
             <div className="mb-4 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/20 text-2xl">
-                  ⭐
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500/15">
+                  <img
+                    src="/ICONS/STAR_RECOMMENDED.png"
+                    alt="Recommended icon"
+                    className="h-6 w-6 object-contain"
+                  />
                 </div>
                 <div>
                   <p className="text-sm font-medium text-cream/70">Recommended</p>
@@ -140,10 +157,14 @@ const Home = () => {
           </div>
 
           {/* Quick actions card */}
-          <div className="dys-surface relative col-span-1 rounded-3xl bg-[#111118] p-6 text-cream shadow-lg/40 lg:col-span-2">
+          <div className="group relative col-span-1 rounded-3xl border border-slate-700/60 bg-[#111118] p-6 text-cream shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)] lg:col-span-2">
             <div className="mb-4 flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent/25 text-2xl">
-                ⚡
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-500/15">
+                <img
+                  src="/ICONS/BOLT_QUICK_ACTIONS.png"
+                  alt="Quick actions icon"
+                  className="h-6 w-6 object-contain"
+                />
               </div>
               <p className="text-lg font-semibold text-white">Quick actions</p>
             </div>
@@ -151,13 +172,13 @@ const Home = () => {
             <div className="space-y-3 text-sm">
               <button
                 type="button"
-                className="flex w-full items-center justify-between rounded-2xl bg-black/40 px-4 py-3 text-left text-cream/90 transition hover:bg-black/60 dys-focus"
+                className="flex w-full items-center justify-between rounded-2xl bg-black/40 px-4 py-3 text-left text-cream/90 transition hover:bg-black/70 dys-focus"
               >
                 <span>Browse all practice stories</span>
               </button>
               <button
                 type="button"
-                className="flex w-full items-center justify-between rounded-2xl bg-black/40 px-4 py-3 text-left text-cream/90 transition hover:bg-black/60 dys-focus"
+                className="flex w-full items-center justify-between rounded-2xl bg-black/40 px-4 py-3 text-left text-cream/90 transition hover:bg-black/70 dys-focus"
               >
                 <span>Upload a worksheet</span>
               </button>

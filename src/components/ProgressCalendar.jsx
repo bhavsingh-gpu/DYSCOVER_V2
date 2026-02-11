@@ -73,7 +73,7 @@ const ProgressCalendar = () => {
   return (
     <section
       aria-label="Reading practice calendar for the current month"
-      className="relative dys-surface flex flex-col gap-5 bg-gradient-to-br from-cream/80 via-white/90 to-accentSoft/40 p-6 sm:p-7 dark:from-[#262938] dark:via-[#262938] dark:to-softSlate/60"
+      className="relative dys-surface flex flex-col gap-5 rounded-3xl border border-slate-700/60 bg-gradient-to-br from-cream/80 via-white/90 to-accentSoft/40 p-6 text-softSlate shadow-lg/40 transition-transform transition-shadow duration-200 hover:-translate-y-1 hover:border-orange-400 hover:shadow-[0_0_32px_rgba(249,115,22,0.45)] sm:p-7 dark:from-[#262938] dark:via-[#262938] dark:to-softSlate/60 dark:text-cream"
     >
       <header className="flex items-baseline justify-between gap-3">
         <div>
