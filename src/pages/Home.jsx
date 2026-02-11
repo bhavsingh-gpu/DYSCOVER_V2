@@ -73,20 +73,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              to="/upload"
-              className="dys-focus inline-flex items-center justify-center rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-accent/90"
-            >
-              Start a demo session
-            </Link>
-            <Link
-              to="/dashboard"
-              className="dys-focus inline-flex items-center justify-center rounded-full border border-dysGray/30 bg-white/80 px-5 py-2.5 text-sm font-semibold text-softSlate transition hover:bg-cream/80 dark:border-white/25 dark:bg-softSlate/70 dark:text-cream"
-            >
-              View sample progress
-            </Link>
-          </div>
+          
 
          
         </section>
@@ -98,45 +85,84 @@ const Home = () => {
         </section>
       </main>
 
-      <section className="px-4 pb-12 sm:px-6">
-        <div className="mx-auto max-w-lg dys-surface relative overflow-hidden p-4 sm:p-5">
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <p className="text-sm font-semibold text-softSlate dark:text-cream">
-              Today&apos;s reading coach
-            </p>
-            <span className="rounded-full bg-accentSoft px-3 py-1 text-xs font-medium text-softSlate dark:bg-accentSoft/90">
-              Demo mode
-            </span>
-          </div>
-
-          <div className="space-y-3 rounded-2xl bg-cream/70 p-3 text-sm text-softSlate shadow-inner dark:bg-[#272A38] dark:text-cream/90">
-            <div className="flex items-start gap-2">
-              <div className="mt-1 h-2 w-2 rounded-full bg-accent" />
-              <p>
-                &ldquo;We&apos;ll read this in small, easy steps. You can listen, follow the words,
-                and pause whenever you need.&rdquo;
-              </p>
+      <section className="px-4 pb-10 sm:px-6">
+        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-3">
+          {/* Daily goal card */}
+          <div className="dys-surface relative flex flex-col justify-between rounded-3xl bg-[#111118] p-6 text-cream shadow-lg/40">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accentSoft/30 text-2xl">
+                🎯
+              </div>
+              <div>
+                <p className="text-sm font-medium text-cream/70">Daily goal</p>
+                <p className="text-lg font-semibold text-white">Start today&apos;s calm reading</p>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <button
-                type="button"
-                className="dys-focus inline-flex items-center gap-1 rounded-full bg-softSlate px-3 py-1.5 font-medium text-cream shadow-sm transition hover:bg-softSlate/90"
-              >
-                ▶ Play sample audio
-              </button>
-              <button
-                type="button"
-                className="dys-focus inline-flex items-center gap-1 rounded-full border border-dysGray/30 bg-white/80 px-3 py-1.5 font-medium text-softSlate transition hover:bg-cream/80 dark:border-white/25 dark:bg-softSlate/70 dark:text-cream"
-              >
-                Aa Slow &amp; spaced text
-              </button>
+            <div className="mt-6 h-1.5 w-full rounded-full bg-cream/10">
+              <div className="h-full w-1/5 rounded-full bg-accent" />
             </div>
           </div>
 
-          <p className="mt-3 text-xs text-dysGray/80 dark:text-cream/80">
-            This is a visual preview only. Future backend will plug in real handwriting analysis,
-            simplified text, and quizzes.
-          </p>
+          {/* Your progress card */}
+          <div className="dys-surface relative flex flex-col justify-between rounded-3xl bg-[#111118] p-6 text-cream shadow-lg/40">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-medium text-cream/70">Your progress</p>
+                <p className="mt-2 text-3xl font-semibold text-white">0%</p>
+                <p className="text-xs text-cream/70">Calm reading completed</p>
+              </div>
+            </div>
+            <div className="mt-6 h-1.5 w-full rounded-full bg-cream/10">
+              <div className="h-full w-0 rounded-full bg-accent" />
+            </div>
+          </div>
+
+          {/* Recommended card */}
+          <div className="dys-surface relative flex flex-col rounded-3xl bg-[#111118] p-6 text-cream shadow-lg/40">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500/20 text-2xl">
+                  ⭐
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-cream/70">Recommended</p>
+                  <p className="text-base font-semibold text-white">
+                    Start with this gentle practice
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-auto rounded-2xl bg-black/40 px-4 py-3 text-sm">
+              <p className="text-xs font-medium text-cream/60">Level</p>
+              <p className="mt-1 text-base font-semibold text-white">Calm reading · Easy</p>
+            </div>
+          </div>
+
+          {/* Quick actions card */}
+          <div className="dys-surface relative col-span-1 rounded-3xl bg-[#111118] p-6 text-cream shadow-lg/40 lg:col-span-2">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent/25 text-2xl">
+                ⚡
+              </div>
+              <p className="text-lg font-semibold text-white">Quick actions</p>
+            </div>
+
+            <div className="space-y-3 text-sm">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between rounded-2xl bg-black/40 px-4 py-3 text-left text-cream/90 transition hover:bg-black/60 dys-focus"
+              >
+                <span>Browse all practice stories</span>
+              </button>
+              <button
+                type="button"
+                className="flex w-full items-center justify-between rounded-2xl bg-black/40 px-4 py-3 text-left text-cream/90 transition hover:bg-black/60 dys-focus"
+              >
+                <span>Upload a worksheet</span>
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
