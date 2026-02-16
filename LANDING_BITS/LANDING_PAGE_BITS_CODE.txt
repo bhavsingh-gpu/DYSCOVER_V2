@@ -1,0 +1,15 @@
+<div style={{ width: '1080px', height: '1080px', position: 'relative' }}>
+  <Particles
+    particleCount={780}
+    particleSpread={16}
+    speed={0.01}
+    particleColors={["#ffffff","#e2cbbb","#f08c00"]}
+    moveParticlesOnHover={false}
+    particleHoverFactor={1.3}
+    alphaParticles={false}
+    particleBaseSize={100}
+    sizeRandomness={1}
+    cameraDistance={20}
+    disableRotation={false}
+  />
+</div>

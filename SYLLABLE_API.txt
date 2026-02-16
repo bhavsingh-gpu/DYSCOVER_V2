@@ -1,0 +1,37 @@
+============================================================
+PROJECT: RELIABLE SYLLABLE PARSING FOR LLMS
+============================================================
+
+--- PROBLEM STATEMENT ---
+When requesting syllable breaks via the Gemini API (e.g., "BEAUTIFUL" -> "BEAU.TI.FUL"), 
+the model may fail due to:
+1. Tokenization: The model sees the word as one unit rather than individual letters.
+2. Verbosity: The API often adds conversational filler (e.g., "Sure, here it is...").
+3. Inconsistency: Without strict constraints, formatting varies between requests.
+
+--- THE SOLUTION ---
+To ensure 100% accuracy, use "Few-Shot Prompting" combined with a 0.0 Temperature 
+setting. This forces the model to follow a pattern and removes "creative" randomness.
+
+--- RECOMMENDED SYSTEM PROMPT ---
+"You are a linguistic tool. Your only task is to break words into syllables 
+separated by dots. 
+
+RULES:
+- Output must be uppercase.
+- Use a period (.) as the separator.
+- Provide ONLY the word. Do not include any prose or explanations.
+
+EXAMPLES:
+Input: butterfly | Output: BUT.TER.FLY
+Input: education | Output: ED.U.CA.TION
+Input: beautiful | Output: BEAU.TI.FUL"
+
+--- IMPLEMENTATION STEPS ---
+1. Set the 'Temperature' parameter to 0.0.
+2. Pass the rules above into the 'System Instruction' block.
+3. Send the target word as the 'User' message.
+
+============================================================
+END OF DOCUMENT
+============================================================

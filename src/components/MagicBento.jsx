@@ -7,45 +7,6 @@ const DEFAULT_SPOTLIGHT_RADIUS = 300;
 const DEFAULT_GLOW_COLOR = '249, 115, 22';
 const MOBILE_BREAKPOINT = 768;
 
-const cardData = [
-  {
-    color: '#111827',
-    title: 'Analytics',
-    description: 'Track user behavior',
-    label: 'Insights'
-  },
-  {
-    color: '#111827',
-    title: 'Dashboard',
-    description: 'Centralized data view',
-    label: 'Overview'
-  },
-  {
-    color: '#111827',
-    title: 'Collaboration',
-    description: 'Work together seamlessly',
-    label: 'Teamwork'
-  },
-  {
-    color: '#111827',
-    title: 'Automation',
-    description: 'Streamline workflows',
-    label: 'Efficiency'
-  },
-  {
-    color: '#111827',
-    title: 'Integration',
-    description: 'Connect favorite tools',
-    label: 'Connectivity'
-  },
-  {
-    color: '#111827',
-    title: 'Security',
-    description: 'Enterprise-grade protection',
-    label: 'Protection'
-  }
-];
-
 const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {
   const el = document.createElement('div');
   el.className = 'particle';
@@ -80,7 +41,7 @@ const updateCardGlowProperties = (card, mouseX, mouseY, glow, radius) => {
   card.style.setProperty('--glow-radius', `${radius}px`);
 };
 
-const ParticleCard = ({
+export const BentoCard = ({
   children,
   className = '',
   disableAnimations = false,
@@ -88,8 +49,10 @@ const ParticleCard = ({
   particleCount = DEFAULT_PARTICLE_COUNT,
   glowColor = DEFAULT_GLOW_COLOR,
   enableTilt = true,
-  clickEffect = false,
-  enableMagnetism = false
+  clickEffect = true,
+  enableMagnetism = true,
+  enableStars = true,
+  enableBorderGlow = true
 }) => {
   const cardRef = useRef(null);
   const particlesRef = useRef([]);
@@ -129,7 +92,7 @@ const ParticleCard = ({
   }, []);
 
   const animateParticles = useCallback(() => {
-    if (!cardRef.current || !isHoveredRef.current) return;
+    if (!cardRef.current || !isHoveredRef.current || !enableStars) return;
 
     if (!particlesInitialized.current) {
       initializeParticles();
@@ -170,7 +133,7 @@ const ParticleCard = ({
 
       timeoutsRef.current.push(timeoutId);
     });
-  }, [initializeParticles]);
+  }, [initializeParticles, enableStars]);
 
   useEffect(() => {
     if (disableAnimations || !cardRef.current) return;
@@ -179,7 +142,7 @@ const ParticleCard = ({
 
     const handleMouseEnter = () => {
       isHoveredRef.current = true;
-      animateParticles();
+      if (enableStars) animateParticles();
 
       if (enableTilt) {
         gsap.to(element, {
@@ -308,13 +271,20 @@ const ParticleCard = ({
       element.removeEventListener('click', handleClick);
       clearAllParticles();
     };
-  }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor]);
+  }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor, enableStars]);
+
+  const baseClassName = `magic-bento-card magic-bento-card--text-autohide ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''} ${className}`;
 
   return (
     <div
       ref={cardRef}
-      className={`${className} particle-container`}
-      style={{ ...style, position: 'relative', overflow: 'hidden' }}
+      className={`${baseClassName} particle-container`}
+      style={{
+        ...style,
+        position: 'relative',
+        overflow: 'hidden',
+        '--glow-color': glowColor
+      }}
     >
       {children}
     </div>
@@ -453,46 +423,28 @@ const GlobalSpotlight = ({
   return null;
 };
 
-const BentoCardGrid = ({ children, gridRef }) => (
-  <div className="card-grid bento-section" ref={gridRef}>
-    {children}
-  </div>
-);
-
-const useMobileDetection = () => {
+export const BentoGrid = ({
+  children,
+  className = '',
+  enableSpotlight = true,
+  spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
+  glowColor = DEFAULT_GLOW_COLOR,
+  disableAnimations = false
+}) => {
+  const gridRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= MOBILE_BREAKPOINT);
-
     checkMobile();
     window.addEventListener('resize', checkMobile);
-
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  return isMobile;
-};
-
-const MagicBento = ({
-  textAutoHide = true,
-  enableStars = true,
-  enableSpotlight = true,
-  enableBorderGlow = true,
-  disableAnimations = false,
-  spotlightRadius = DEFAULT_SPOTLIGHT_RADIUS,
-  particleCount = DEFAULT_PARTICLE_COUNT,
-  enableTilt = false,
-  glowColor = DEFAULT_GLOW_COLOR,
-  clickEffect = true,
-  enableMagnetism = true
-}) => {
-  const gridRef = useRef(null);
-  const isMobile = useMobileDetection();
   const shouldDisableAnimations = disableAnimations || isMobile;
 
   return (
-    <>
+    <div className={`card-grid bento-section ${className}`} ref={gridRef}>
       {enableSpotlight && (
         <GlobalSpotlight
           gridRef={gridRef}
@@ -502,170 +454,24 @@ const MagicBento = ({
           glowColor={glowColor}
         />
       )}
-
-      <BentoCardGrid gridRef={gridRef}>
-        {cardData.map((card, index) => {
-          const baseClassName = `magic-bento-card ${
-            textAutoHide ? 'magic-bento-card--text-autohide' : ''
-          } ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''}`;
-          const cardProps = {
-            className: baseClassName,
-            style: {
-              backgroundColor: card.color,
-              '--glow-color': glowColor
-            }
-          };
-
-          if (enableStars) {
-            return (
-              <ParticleCard
-                key={index}
-                {...cardProps}
-                disableAnimations={shouldDisableAnimations}
-                particleCount={particleCount}
-                glowColor={glowColor}
-                enableTilt={enableTilt}
-                clickEffect={clickEffect}
-                enableMagnetism={enableMagnetism}
-              >
-                <div className="magic-bento-card__header">
-                  <div className="magic-bento-card__label">{card.label}</div>
-                </div>
-                <div className="magic-bento-card__content">
-                  <h2 className="magic-bento-card__title">{card.title}</h2>
-                  <p className="magic-bento-card__description">{card.description}</p>
-                </div>
-              </ParticleCard>
-            );
-          }
-
-          return (
-            <div
-              key={index}
-              {...cardProps}
-              ref={(el) => {
-                if (!el) return;
-
-                const handleMouseMove = (e) => {
-                  if (shouldDisableAnimations) return;
-
-                  const rect = el.getBoundingClientRect();
-                  const x = e.clientX - rect.left;
-                  const y = e.clientY - rect.top;
-                  const centerX = rect.width / 2;
-                  const centerY = rect.height / 2;
-
-                  if (enableTilt) {
-                    const rotateX = ((y - centerY) / centerY) * -10;
-                    const rotateY = ((x - centerX) / centerX) * 10;
-                    gsap.to(el, {
-                      rotateX,
-                      rotateY,
-                      duration: 0.1,
-                      ease: 'power2.out',
-                      transformPerspective: 1000
-                    });
-                  }
-
-                  if (enableMagnetism) {
-                    const magnetX = (x - centerX) * 0.05;
-                    const magnetY = (y - centerY) * 0.05;
-                    gsap.to(el, {
-                      x: magnetX,
-                      y: magnetY,
-                      duration: 0.3,
-                      ease: 'power2.out'
-                    });
-                  }
-                };
-
-                const handleMouseLeave = () => {
-                  if (shouldDisableAnimations) return;
-
-                  if (enableTilt) {
-                    gsap.to(el, {
-                      rotateX: 0,
-                      rotateY: 0,
-                      duration: 0.3,
-                      ease: 'power2.out'
-                    });
-                  }
-
-                  if (enableMagnetism) {
-                    gsap.to(el, {
-                      x: 0,
-                      y: 0,
-                      duration: 0.3,
-                      ease: 'power2.out'
-                    });
-                  }
-                };
-
-                const handleClick = (e) => {
-                  if (!clickEffect || shouldDisableAnimations) return;
-
-                  const rect = el.getBoundingClientRect();
-                  const x = e.clientX - rect.left;
-                  const y = e.clientY - rect.top;
-
-                  const maxDistance = Math.max(
-                    Math.hypot(x, y),
-                    Math.hypot(x - rect.width, y),
-                    Math.hypot(x, y - rect.height),
-                    Math.hypot(x - rect.width, y - rect.height)
-                  );
-
-                  const ripple = document.createElement('div');
-                  ripple.style.cssText = `
-                    position: absolute;
-                    width: ${maxDistance * 2}px;
-                    height: ${maxDistance * 2}px;
-                    border-radius: 50%;
-                    background: radial-gradient(circle, rgba(${glowColor}, 0.4) 0%, rgba(${glowColor}, 0.2) 30%, transparent 70%);
-                    left: ${x - maxDistance}px;
-                    top: ${y - maxDistance}px;
-                    pointer-events: none;
-                    z-index: 1000;
-                  `;
-
-                  el.appendChild(ripple);
-
-                  gsap.fromTo(
-                    ripple,
-                    {
-                      scale: 0,
-                      opacity: 1
-                    },
-                    {
-                      scale: 1,
-                      opacity: 0,
-                      duration: 0.8,
-                      ease: 'power2.out',
-                      onComplete: () => ripple.remove()
-                    }
-                  );
-                };
-
-                el.addEventListener('mousemove', handleMouseMove);
-                el.addEventListener('mouseleave', handleMouseLeave);
-                el.addEventListener('click', handleClick);
-              }}
-            >
-              <div className="magic-bento-card__header">
-                <div className="magic-bento-card__label">{card.label}</div>
-              </div>
-              <div className="magic-bento-card__content">
-                <h2 className="magic-bento-card__title">{card.title}</h2>
-                <p className="magic-bento-card__description">{card.description}</p>
-              </div>
-            </div>
-          );
-        })}
-      </BentoCardGrid>
-    </>
+      {React.Children.map(children, child => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, { disableAnimations: shouldDisableAnimations });
+        }
+        return child;
+      })}
+    </div>
   );
 };
 
-export default MagicBento;
+// Default export remains for backwards compatibility if needed, but uses exported components
+export default function MagicBento(props) {
+  return (
+    <BentoGrid {...props}>
+      {/* If used without children, you would need to pass data, 
+          but we are refactoring away from hardcoded cardData */}
+    </BentoGrid>
+  );
+}
 
 
