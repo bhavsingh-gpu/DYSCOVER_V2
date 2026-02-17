@@ -10,9 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Initialize Firebase Admin SDK
-try {
-  admin.app();
-} catch {
+if (!admin.apps.length) {
   try {
     let serviceAccount;
     // Priority 1: Individual Env Vars (Recommended for Vercel)
@@ -41,7 +39,7 @@ try {
         serviceAccount = JSON.parse(keyFile);
         console.log('✅ Using Firebase service account from JSON file');
       } catch (fileError) {
-        // Fallback for local development if no file exists
+        // Safe check later
       }
     }
 
@@ -51,11 +49,10 @@ try {
       });
       console.log('✅ Firebase Admin SDK initialized successfully');
     } else {
-      console.error('❌ Firebase service account missing. Some features will fail.');
+      console.error('❌ Firebase service account missing. Check Vercel Env Vars.');
     }
   } catch (error) {
-    console.error('❌ Firebase initialization crashed:', error.message);
-    // Do not re-throw here so the server can still boot and serve other routes
+    console.error('❌ Firebase initialization failed:', error.message);
   }
 }
 
