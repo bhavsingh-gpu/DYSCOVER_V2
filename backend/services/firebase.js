@@ -35,15 +35,18 @@ try {
   }
 
   if (!admin.apps.length) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount)
-    });
+    if (serviceAccount) {
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+      });
+      console.log('✅ Firebase Admin SDK initialized successfully');
+    } else {
+      console.error('❌ Firebase service account missing. Some features will fail.');
+    }
   }
-
-  console.log('✅ Firebase Admin SDK initialized successfully');
 } catch (error) {
-  console.error('❌ Firebase initialization failed:', error.message);
-  throw error;
+  console.error('❌ Firebase initialization crashed:', error.message);
+  // Do not re-throw here so the server can still boot and serve other routes
 }
 
 export const db = admin.firestore();

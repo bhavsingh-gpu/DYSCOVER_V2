@@ -13,10 +13,14 @@ const dicPath = path.join(__dirname, '../dictionaries/en_US.dic');
 // Initialize Typo.js
 let dictionary = null;
 try {
-    const affData = fs.readFileSync(affPath, 'utf8');
-    const dicData = fs.readFileSync(dicPath, 'utf8');
-    dictionary = new Typo('en_US', affData, dicData);
-    console.log('[SpellCheck] Hunspell (en_US) engine loaded.');
+    if (fs.existsSync(affPath) && fs.existsSync(dicPath)) {
+        const affData = fs.readFileSync(affPath, 'utf8');
+        const dicData = fs.readFileSync(dicPath, 'utf8');
+        dictionary = new Typo('en_US', affData, dicData);
+        console.log('[SpellCheck] Hunspell (en_US) engine loaded.');
+    } else {
+        console.warn('[SpellCheck] Dictionaries not found at:', affPath);
+    }
 } catch (err) {
     console.error('[SpellCheck] Initialization failed:', err.message);
 }
