@@ -1,6 +1,6 @@
 import { checkTextLocally } from './spellCheck.js';
 import { checkGrammar } from './languageTool.js';
-import { callGeminiAI } from './gemini.js';
+import { callGeminiAI } from './aiClient.js';
 import { findBestLinguisticMatch } from './linguisticUtils.js';
 
 /**

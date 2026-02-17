@@ -25,10 +25,15 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
-app.use('/api/ai', aiRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/upload', uploadRoutes);
-app.use('/api/progress', progressRoutes);
+// We mount them at both /api and / to handle Vercel's potential prefix stripping
+const apiRouter = express.Router();
+apiRouter.use('/ai', aiRoutes);
+apiRouter.use('/auth', authRoutes);
+apiRouter.use('/upload', uploadRoutes);
+apiRouter.use('/progress', progressRoutes);
+
+app.use('/api', apiRouter);
+app.use('/', apiRouter); // Fallback for when /api is stripped by Vercel rewrites
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -44,8 +49,12 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 DYSCOVER Backend Server running on http://localhost:${PORT}`);
-  console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 DYSCOVER Backend Server running on http://localhost:${PORT}`);
+    console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
+
+export default app;
 

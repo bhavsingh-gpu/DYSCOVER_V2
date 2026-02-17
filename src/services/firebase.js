@@ -24,7 +24,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // Backend API base URL
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = import.meta.env.PROD
+    ? '/api'
+    : 'http://localhost:3001/api';
 
 /**
  * Sign in an existing user with email and password
