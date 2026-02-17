@@ -12,25 +12,33 @@ const __dirname = dirname(__filename);
 // Initialize Firebase Admin SDK
 try {
   let serviceAccount;
+  // Priority 1: Individual Env Vars (Recommended for Vercel)
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
 
-  // Try to parse from environment variable first
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  if (projectId && clientEmail && privateKey) {
+    serviceAccount = { projectId, clientEmail, privateKey };
+    console.log('✅ Using Firebase service account from individual Env Vars');
+  }
+  // Priority 2: Full JSON string from Env Var
+  else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     try {
       serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-      console.log('✅ Using Firebase service account from environment variable');
+      console.log('✅ Using Firebase service account from JSON Env Var');
     } catch (parseError) {
-      console.warn('⚠️  Failed to parse FIREBASE_SERVICE_ACCOUNT from env, trying JSON file...');
-      throw parseError;
+      console.warn('⚠️  Failed to parse FIREBASE_SERVICE_ACCOUNT from env');
     }
-  } else {
-    // Fallback: read from JSON file
+  }
+  // Priority 3: JSON File (Local Dev Only)
+  else {
     try {
       const keyPath = join(__dirname, '..', 'FIREBASE_KEY_DYSCOVER.json');
       const keyFile = readFileSync(keyPath, 'utf8');
       serviceAccount = JSON.parse(keyFile);
       console.log('✅ Using Firebase service account from JSON file');
     } catch (fileError) {
-      throw new Error('Firebase service account not found. Please set FIREBASE_SERVICE_ACCOUNT in .env or provide FIREBASE_KEY_DYSCOVER.json');
+      // Don't throw yet, let the handler check if serviceAccount exists
     }
   }
 
