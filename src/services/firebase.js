@@ -48,7 +48,14 @@ export const loginUser = async (email, password, role) => {
     });
 
     if (!response.ok) {
-        const errorData = await response.json();
+        const errorText = await response.text();
+        console.error('Auth verification failed:', errorText);
+        let errorData;
+        try {
+            errorData = JSON.parse(errorText);
+        } catch (e) {
+            throw new Error(`Server error (${response.status}): ${errorText.substring(0, 50)}...`);
+        }
         throw new Error(errorData.message || errorData.error || 'Backend verification failed');
     }
 
@@ -79,7 +86,14 @@ export const signUpUser = async (email, password, role, name) => {
     });
 
     if (!response.ok) {
-        const errorData = await response.json();
+        const errorText = await response.text();
+        console.error('Signup verification failed:', errorText);
+        let errorData;
+        try {
+            errorData = JSON.parse(errorText);
+        } catch (e) {
+            throw new Error(`Server error (${response.status}): ${errorText.substring(0, 50)}...`);
+        }
         throw new Error(errorData.message || errorData.error || 'Backend verification failed');
     }
 

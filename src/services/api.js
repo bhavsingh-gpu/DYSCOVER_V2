@@ -15,35 +15,36 @@ const getCurrentUser = () => {
     }
 };
 
-/**
- * Simplify text for dyslexic learners using Gemini AI
- * @param {string} text - The text to simplify
- * @param {boolean} usePro - Whether to use the Pro model (default: false = Flash)
- */
-export const simplifyText = async (text, usePro = false) => {
-    const user = getCurrentUser();
-
-    const response = await fetch(`${API_BASE}/ai/simplify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            text,
-            usePro,
-            userId: user?.uid || null
-        })
-    });
-
+const handleResponse = async (response, context) => {
     if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to simplify text');
+        const errorText = await response.text();
+        console.error(`${context} failed:`, errorText);
+        let errorData;
+        try {
+            errorData = JSON.parse(errorText);
+        } catch (e) {
+            throw new Error(`Server error (${response.status}) at ${context}: ${errorText.substring(0, 50)}...`);
+        }
+        throw new Error(errorData.message || errorData.error || `${context} failed`);
     }
-
     return response.json();
 };
 
 /**
+ * Simplify text for dyslexic learners using Gemini AI
+ */
+export const simplifyText = async (text, usePro = false) => {
+    const user = getCurrentUser();
+    const response = await fetch(`${API_BASE}/ai/simplify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, usePro, userId: user?.uid || null })
+    });
+    return handleResponse(response, 'Simplify');
+};
+
+/**
  * Generate audio-optimized text using Gemini AI
- * @param {string} text - The text to optimize for audio
  */
 export const getAudioText = async (text) => {
     const response = await fetch(`${API_BASE}/ai/audio-text`, {
@@ -51,72 +52,37 @@ export const getAudioText = async (text) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })
     });
-
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to generate audio text');
-    }
-
-    return response.json();
+    return handleResponse(response, 'Audio Text');
 };
 
 /**
  * Analyze content for difficulty and suggestions using Gemini AI
- * @param {string} content - The content to analyze
- * @param {string} contentType - Type of content (default: 'text')
  */
 export const analyzeContent = async (content, contentType = 'text') => {
     const user = getCurrentUser();
-
     const response = await fetch(`${API_BASE}/ai/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            content,
-            contentType,
-            userId: user?.uid || null
-        })
+        body: JSON.stringify({ content, contentType, userId: user?.uid || null })
     });
-
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to analyze content');
-    }
-
-    return response.json();
+    return handleResponse(response, 'Analyze');
 };
 
 /**
  * Process uploaded content (text or image) using Gemini AI
- * @param {string} content - The content (text or base64 data)
- * @param {string} contentType - Type of content ('text', 'image', 'handwriting')
- * @param {object} metadata - Optional metadata
  */
 export const processUpload = async (content, contentType = 'text', metadata = {}) => {
     const user = getCurrentUser();
-
     const response = await fetch(`${API_BASE}/upload/process`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            content,
-            contentType,
-            metadata,
-            userId: user?.uid || null
-        })
+        body: JSON.stringify({ content, contentType, metadata, userId: user?.uid || null })
     });
-
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to process upload');
-    }
-
-    return response.json();
+    return handleResponse(response, 'Upload');
 };
 
 /**
  * Get syllable breakdown and mnemonics for a specific word
- * @param {string} word - The word to analyze
  */
 export const getWordLabData = async (word) => {
     const response = await fetch(`${API_BASE}/ai/word-lab`, {
@@ -124,18 +90,11 @@ export const getWordLabData = async (word) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ word })
     });
-
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to get word lab data');
-    }
-
-    return response.json();
+    return handleResponse(response, 'Word Lab');
 };
 
 /**
  * Generate a comprehension quiz for the text
- * @param {string} text - The text to quiz on
  */
 export const generateQuiz = async (text) => {
     const response = await fetch(`${API_BASE}/ai/generate-quiz`, {
@@ -143,44 +102,27 @@ export const generateQuiz = async (text) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })
     });
-
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to generate quiz');
-    }
-
-    return response.json();
+    return handleResponse(response, 'Quiz');
 };
 
 /**
  * Get user progress records
- * @param {string} userId - User ID
  */
 export const getUserProgress = async (userId) => {
     const response = await fetch(`${API_BASE}/progress/${userId}`);
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to fetch progress');
-    }
-    return response.json();
+    return handleResponse(response, 'Get Progress');
 };
 
 /**
  * Get user statistics
- * @param {string} userId - User ID
  */
 export const getUserStats = async (userId) => {
     const response = await fetch(`${API_BASE}/progress/${userId}/stats`);
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to fetch statistics');
-    }
-    return response.json();
+    return handleResponse(response, 'Get Stats');
 };
 
 /**
  * Save user progress
- * @param {object} progressData - Progress info
  */
 export const saveUserProgress = async (progressData) => {
     const user = getCurrentUser();
@@ -189,11 +131,8 @@ export const saveUserProgress = async (progressData) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(progressData)
     });
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || errorData.error || 'Failed to save progress');
-    }
-    return response.json();
+    return handleResponse(response, 'Save Progress');
 };
 
 export { getCurrentUser };
+

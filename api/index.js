@@ -1,6 +1,6 @@
 import app from '../backend/server.js';
 
-export default (req, res) => {
-    // Clear any existing listeners to prevent leaks in serverless warm starts
+export default function handler(req, res) {
+    // Bridge the request to the Express app
     return app(req, res);
-};
+}
