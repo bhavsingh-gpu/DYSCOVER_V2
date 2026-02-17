@@ -11,38 +11,40 @@ const __dirname = dirname(__filename);
 
 // Initialize Firebase Admin SDK
 try {
-  let serviceAccount;
-  // Priority 1: Individual Env Vars (Recommended for Vercel)
-  const projectId = process.env.FIREBASE_PROJECT_ID;
-  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  admin.app();
+} catch {
+  try {
+    let serviceAccount;
+    // Priority 1: Individual Env Vars (Recommended for Vercel)
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
 
-  if (projectId && clientEmail && privateKey) {
-    serviceAccount = { projectId, clientEmail, privateKey };
-    console.log('✅ Using Firebase service account from individual Env Vars');
-  }
-  // Priority 2: Full JSON string from Env Var
-  else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    try {
-      serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-      console.log('✅ Using Firebase service account from JSON Env Var');
-    } catch (parseError) {
-      console.warn('⚠️  Failed to parse FIREBASE_SERVICE_ACCOUNT from env');
+    if (projectId && clientEmail && privateKey) {
+      serviceAccount = { projectId, clientEmail, privateKey };
+      console.log('✅ Using Firebase service account from individual Env Vars');
     }
-  }
-  // Priority 3: JSON File (Local Dev Only)
-  else {
-    try {
-      const keyPath = join(__dirname, '..', 'FIREBASE_KEY_DYSCOVER.json');
-      const keyFile = readFileSync(keyPath, 'utf8');
-      serviceAccount = JSON.parse(keyFile);
-      console.log('✅ Using Firebase service account from JSON file');
-    } catch (fileError) {
-      // Don't throw yet, let the handler check if serviceAccount exists
+    // Priority 2: Full JSON string from Env Var
+    else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+      try {
+        serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+        console.log('✅ Using Firebase service account from JSON Env Var');
+      } catch (parseError) {
+        console.warn('⚠️  Failed to parse FIREBASE_SERVICE_ACCOUNT from env');
+      }
     }
-  }
+    // Priority 3: JSON File (Local Dev Only)
+    else {
+      try {
+        const keyPath = join(__dirname, '..', 'FIREBASE_KEY_DYSCOVER.json');
+        const keyFile = readFileSync(keyPath, 'utf8');
+        serviceAccount = JSON.parse(keyFile);
+        console.log('✅ Using Firebase service account from JSON file');
+      } catch (fileError) {
+        // Fallback for local development if no file exists
+      }
+    }
 
-  if (!admin.apps.length) {
     if (serviceAccount) {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
@@ -51,10 +53,10 @@ try {
     } else {
       console.error('❌ Firebase service account missing. Some features will fail.');
     }
+  } catch (error) {
+    console.error('❌ Firebase initialization crashed:', error.message);
+    // Do not re-throw here so the server can still boot and serve other routes
   }
-} catch (error) {
-  console.error('❌ Firebase initialization crashed:', error.message);
-  // Do not re-throw here so the server can still boot and serve other routes
 }
 
 export const db = admin.firestore();

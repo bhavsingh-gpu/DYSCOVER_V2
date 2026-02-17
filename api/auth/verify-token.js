@@ -1,51 +1,35 @@
 import admin from "firebase-admin";
 
-// Standalone Firebase Admin initialization for Vercel Serverless
-if (!admin.apps.length) {
-    try {
-        const projectId = process.env.FIREBASE_PROJECT_ID;
-        const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-        const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
-
-        if (projectId && clientEmail && privateKey) {
-            admin.initializeApp({
-                credential: admin.credential.cert({
-                    projectId,
-                    clientEmail,
-                    privateKey,
-                }),
-            });
-            console.log('✅ Firebase Admin initialized via individual Env Vars');
-        } else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-            // Fallback to the JSON string if available
-            const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            });
-            console.log('✅ Firebase Admin initialized via JSON Env Var');
-        }
-    } catch (error) {
-        console.error('❌ Firebase Admin initialization failed:', error.message);
-    }
+// Safe initialization pattern for Serverless
+try {
+    admin.app();
+} catch {
+    admin.initializeApp({
+        credential: admin.credential.cert({
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+        }),
+    });
 }
 
 export default async function handler(req, res) {
-    // Support both POST (body) and GET (headers) for flexibility
     try {
-        const idToken = req.body?.idToken || req.headers.authorization?.split("Bearer ")[1];
+        // 1. Extract token from header or body
+        const token = req.headers.authorization?.split("Bearer ")[1] || req.body?.idToken;
         const role = req.body?.role || 'student';
         const name = req.body?.name || '';
 
-        if (!idToken) {
+        if (!token) {
             return res.status(401).json({ error: "No token provided" });
         }
 
-        // Verify the Firebase ID token
-        const decodedToken = await admin.auth().verifyIdToken(idToken);
-        const uid = decodedToken.uid;
-        const email = decodedToken.email;
+        // 2. Verify with Firebase
+        const decoded = await admin.auth().verifyIdToken(token);
+        const uid = decoded.uid;
+        const email = decoded.email;
 
-        // Database interaction (Firestore)
+        // 3. Sync with Firestore
         const db = admin.firestore();
         const userRef = db.collection('users').doc(uid);
         const userDoc = await userRef.get();
@@ -53,7 +37,7 @@ export default async function handler(req, res) {
         if (!userDoc.exists) {
             await userRef.set({
                 email,
-                displayName: name || decodedToken.name || '',
+                displayName: name || decoded.name || '',
                 role: role,
                 createdAt: new Date().toISOString(),
                 lastLogin: new Date().toISOString()
@@ -71,17 +55,16 @@ export default async function handler(req, res) {
             user: {
                 uid,
                 email,
-                name: decodedToken.name || name || '',
+                name: decoded.name || name || '',
                 role: finalRole
             }
         });
 
     } catch (err) {
         console.error('Auth handler error:', err);
-        return res.status(500).json({
+        return res.status(401).json({
             error: "Authentication failed",
             message: err.message,
-            code: err.code
         });
     }
 }
