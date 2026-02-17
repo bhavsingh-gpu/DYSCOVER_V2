@@ -10,13 +10,13 @@ import {
 
 // Firebase client configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCdd1eNI31z4SVPj5q7CXpwpYbUOjUGI94",
-    authDomain: "dyscover-4016c.firebaseapp.com",
-    projectId: "dyscover-4016c",
-    storageBucket: "dyscover-4016c.firebasestorage.app",
-    messagingSenderId: "193627902536",
-    appId: "1:193627902536:web:203f50953982c1ad7dfe7d",
-    measurementId: "G-SE7G7LD8KD"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase

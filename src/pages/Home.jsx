@@ -159,7 +159,7 @@ const Home = () => {
             <BentoCard className="rounded-3xl border border-orange-500/20 bg-gradient-to-r from-orange-500/5 to-transparent p-6 dark:bg-white/5 shadow-sm" glowColor="249, 115, 22" enableStars={true}>
               <div className="flex items-center gap-4 mb-4">
                 <div className="bento-icon-container">
-                  <img src="/WORD_LAB_ICON.png" alt="word lab" className="h-6 w-6" />
+                  <img src="/WORD_LAB_ICON.png" alt="word lab" className="h-6 w-6 invert dark:invert-0" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-ink dark:text-white">Quick Word Lab</h3>
@@ -294,7 +294,7 @@ const Home = () => {
                   <Link to="/upload" className="flex items-center justify-between p-4 w-full">
                     <div className="flex items-center gap-3">
                       <div className="bento-icon-container">
-                        <img src="/WORKSHEET_ICON.png" alt="worksheet" className="h-6 w-6" />
+                        <img src="/WORKSHEET_ICON.png" alt="worksheet" className="h-6 w-6 invert dark:invert-0" />
                       </div>
                       <div>
                         <p className="font-bold text-sm">Upload Worksheet</p>
@@ -309,7 +309,7 @@ const Home = () => {
                   <button className="flex items-center justify-between p-4 w-full text-left">
                     <div className="flex items-center gap-3">
                       <div className="bento-icon-container !bg-blue-500/15 dark:!bg-blue-500/30">
-                        <img src="/PRACTICE_ICON.png" alt="practice" className="h-6 w-6" />
+                        <img src="/PRACTICE_ICON.png" alt="practice" className="h-6 w-6 invert dark:invert-0" />
                       </div>
                       <div>
                         <p className="font-bold text-sm">Practice Stories</p>

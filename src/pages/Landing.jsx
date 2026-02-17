@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import ShootingStars from '../components/ShootingStars';
+import { BentoGrid, BentoCard } from '../components/MagicBento';
 import './Landing.css';
 
 const Landing = () => {
@@ -10,6 +12,7 @@ const Landing = () => {
     <div className="relative min-h-screen flex flex-col overflow-hidden bg-[#050816] text-cream">
       {/* Particles Background */}
       <div className="fixed inset-0 z-0 particles-background">
+        <ShootingStars />
         <div className="particles-container">
           {useMemo(() => (
             Array.from({ length: 780 }).map((_, i) => (
@@ -96,73 +99,97 @@ const Landing = () => {
               Why Choose DYSCOVER?
             </h2>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15">
+            <BentoGrid className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 !grid-cols-none">
+              <BentoCard
+                className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15 !min-h-0"
+                glowColor="249, 115, 22"
+                enableStars={true}
+              >
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500/20">
-                  <span className="text-xl">📚</span>
+                  <img src="/SIMPLIFIED_TEXT_KNOW_MORE.png" alt="Simplified Text" className="h-6 w-6" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">Simplified Text</h3>
                 <p className="text-sm leading-relaxed text-cream/70">
                   AI-powered text simplification makes complex content accessible and easy to understand
                   for dyslexic learners.
                 </p>
-              </div>
+              </BentoCard>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15">
+              <BentoCard
+                className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15 !min-h-0"
+                glowColor="249, 115, 22"
+                enableStars={true}
+              >
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500/20">
-                  <span className="text-xl">🎧</span>
+                  <img src="/AUDIO_KNOW_MORE.png" alt="Audio Support" className="h-6 w-6" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">Audio Support</h3>
                 <p className="text-sm leading-relaxed text-cream/70">
                   Text-to-speech features with optimized pacing help learners follow along and improve
                   comprehension.
                 </p>
-              </div>
+              </BentoCard>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15">
-                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500/20">
-                  <span className="text-xl">📊</span>
+              <BentoCard
+                className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15 !min-h-0"
+                glowColor="59, 130, 246"
+                enableStars={true}
+              >
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-blue-500/20">
+                  <img src="/STAT_UPLOAD_SEC.png" alt="stats" className="h-6 w-6 dark:invert" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">Progress Tracking</h3>
                 <p className="text-sm leading-relaxed text-cream/70">
                   Gentle progress tracking without pressure, focusing on building confidence and
                   celebrating small wins.
                 </p>
-              </div>
+              </BentoCard>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15">
+              <BentoCard
+                className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15 !min-h-0"
+                glowColor="249, 115, 22"
+                enableStars={true}
+              >
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500/20">
-                  <span className="text-xl">🎯</span>
+                  <img src="/TICK_ICON.png" alt="tick" className="h-6 w-6" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">Early Detection</h3>
                 <p className="text-sm leading-relaxed text-cream/70">
                   AI-assisted screening helps identify early signs of dyslexia, enabling timely support
                   and intervention.
                 </p>
-              </div>
+              </BentoCard>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15">
+              <BentoCard
+                className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15 !min-h-0"
+                glowColor="249, 115, 22"
+                enableStars={true}
+              >
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500/20">
-                  <span className="text-xl">🌍</span>
+                  <img src="/INDIAN_KNOW_MORE.png" alt="Indian Context" className="h-6 w-6" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">Indian Context</h3>
                 <p className="text-sm leading-relaxed text-cream/70">
                   Designed specifically for Indian classrooms, understanding local educational needs and
                   language challenges.
                 </p>
-              </div>
+              </BentoCard>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15">
+              <BentoCard
+                className="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-sm transition hover:bg-white/8 hover:border-white/15 !min-h-0"
+                glowColor="59, 130, 246"
+                enableStars={true}
+              >
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500/20">
-                  <span className="text-xl">💙</span>
+                  <img src="/DESIGN_KNOW_MORE.png" alt="Inclusive Design" className="h-6 w-6" />
                 </div>
                 <h3 className="mb-2 text-lg font-semibold text-white">Inclusive Design</h3>
                 <p className="text-sm leading-relaxed text-cream/70">
                   Calm, accessible interface with dyslexia-friendly fonts, colors, and layouts that
                   reduce visual stress.
                 </p>
-              </div>
-            </div>
+              </BentoCard>
+            </BentoGrid>
           </div>
         </div>
       )}

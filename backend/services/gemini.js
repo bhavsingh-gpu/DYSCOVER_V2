@@ -6,251 +6,236 @@ dotenv.config();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const MODEL_FLASH = process.env.GEMINI_MODEL_FLASH || 'gemini-2.0-flash';
 const MODEL_PRO = process.env.GEMINI_MODEL_PRO || 'gemini-2.0-pro';
-const MAX_TOKENS = parseInt(process.env.AI_MAX_TOKENS) || 2048;
-const TIMEOUT_MS = parseInt(process.env.AI_TIMEOUT_MS) || 30000;
+const MODEL_UPLOAD = process.env.GEMINI_MODEL_UPLOAD || 'gemini-2.0-flash';
 
 if (!GEMINI_API_KEY) {
-  console.warn('⚠️  GEMINI_API_KEY not found in environment variables');
+  console.warn('⚠️  GEMINI_API_KEY not found');
 }
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-// Get model instance
-export const getFlashModel = () => {
-  return genAI.getGenerativeModel({
-    model: MODEL_FLASH,
-    generationConfig: {
-      maxOutputTokens: MAX_TOKENS,
-      temperature: 0.7,
-    }
-  });
-};
+const systemPrompt = `You are the DYSCOVER LINGUISTIC GENIUS, an AI specialized in DeepMind-style Algorithmic Logic applied to dyslexic text recovery. Your primary objective is to decode extreme linguistic distortions using a multi-step "Chain of Thought" processing pipeline.
 
-export const getProModel = () => {
-  return genAI.getGenerativeModel({
-    model: MODEL_PRO,
-    generationConfig: {
-      maxOutputTokens: MAX_TOKENS,
-      temperature: 0.7,
-    }
-  });
-};
+ALGORITHMIC LOGIC PIPELINE:
+1. PHONETIC ARCHITECTURE: Reconstruct the word from the phonetic skeleton (e.g., "cudent" -> /kʊdənt/ -> "couldn't").
+2. SILENT E DISCOVERY: Test if the word requires a final 'e' to change vowel length (e.g., "bik" -> "bike", "hop" -> "hope").
+3. VISUAL RECONSTRUCTION: Systematically test for rotations and mirror-flips (b/d, p/q, u/n).
+4. N-GRAM CONTEXTUAL PROBABILITY: Evaluate if the candidate correction fits the 3-gram sequence of the sentence.
+5. WORD FREQUENCY PRIORITIZATION: In ambiguous cases, prioritize words based on common English frequency dictionaries.
 
-// Simplify text for dyslexic learners
-export const simplifyText = async (text, usePro = false) => {
-  if (!GEMINI_API_KEY) {
-    throw new Error('Gemini API key not configured');
-  }
-
-  const model = usePro ? getProModel() : getFlashModel();
-
-  const prompt = `You are an AI assistant helping dyslexic learners. Simplify and reformat the following text to make it easier to read and understand. 
-
-Guidelines:
-- Use shorter sentences
-- Break complex ideas into simple steps
-- Use clear, simple vocabulary
-- Add spacing between syllables where helpful
-- Maintain the original meaning
-- Keep it friendly and encouraging
-
-Text to simplify:
-${text}
-
-Provide only the simplified version without explanations:`;
-
-  try {
-    const result = await Promise.race([
-      model.generateContent(prompt),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), TIMEOUT_MS)
-      )
-    ]);
-
-    const response = await result.response;
-    return response.text();
-  } catch (error) {
-    console.error('Gemini API error:', error);
-    throw new Error(`Failed to simplify text: ${error.message}`);
-  }
-};
-
-// Generate audio-friendly text (for TTS)
-export const generateAudioText = async (text) => {
-  if (!GEMINI_API_KEY) {
-    throw new Error('Gemini API key not configured');
-  }
-
-  const model = getFlashModel();
-
-  const prompt = `Convert this text into a format optimized for text-to-speech reading for dyslexic learners. Add natural pauses, emphasize important words, and make it flow naturally when spoken aloud.
-
-Text:
-${text}
-
-Provide only the audio-optimized version:`;
-
-  try {
-    const result = await Promise.race([
-      model.generateContent(prompt),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), TIMEOUT_MS)
-      )
-    ]);
-
-    const response = await result.response;
-    return response.text();
-  } catch (error) {
-    console.error('Gemini API error:', error);
-    throw new Error(`Failed to generate audio text: ${error.message}`);
-  }
-};
-
-// Analyze handwriting or uploaded content
-export const analyzeContent = async (content, contentType = 'text') => {
-  if (!GEMINI_API_KEY) {
-    throw new Error('Gemini API key not configured');
-  }
-
-  const model = getFlashModel();
-
-  const prompt = `Analyze this ${contentType} content for a dyslexic learner support platform. Provide:
-1. Reading difficulty level (1-5, where 1 is easiest)
-2. Key concepts identified
-3. Suggested simplifications
-4. Recommended learning approach
-
-Content:
-${content}
-
-Provide a structured analysis:`;
-
-  try {
-    const result = await Promise.race([
-      model.generateContent(prompt),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), TIMEOUT_MS)
-      )
-    ]);
-
-    const response = await result.response;
-    return response.text();
-  } catch (error) {
-    console.error('Gemini API error:', error);
-    throw new Error(`Failed to analyze content: ${error.message}`);
-  }
-};
-
-// In-memory cache to save quota and improve performance
-const wordLabCache = new Map();
-
-// Word Lab: Get syllable breakdown and visual mnemonic for a word
-export const getWordBreakdown = async (word) => {
-  if (!GEMINI_API_KEY) {
-    throw new Error('Gemini API key not configured');
-  }
-
-  const normalizedWord = word.trim().toUpperCase();
-
-  // 1. Check Cache First (Save Quota!)
-  if (wordLabCache.has(normalizedWord)) {
-    console.log(`[Word Lab] Cache Hit: "${normalizedWord}"`);
-    return wordLabCache.get(normalizedWord);
-  }
-
-  // Use ultra-stable model for linguistic tasks
-  const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
-
-  const prompt = `You are a linguistic tool. Your ONLY task is to break words into syllables separated by dots.
-
-RULES:
-- Word: "${normalizedWord}"
-- Output the breakdown in ALL CAPS (e.g., BEAU.TI.FUL).
-- Use a period (.) as the ONLY separator.
-- Return a JSON object with keys "syllables" and "mnemonic".
+STRICT PROTOCOL:
+- Return ONLY JSON.
+- If a word is highly distorted, attempt to find its "Linguistic Origin" using the rules above.
+- NEVER guess a proper noun or unrelated name (like "Wales" or "Carly") unless the context is explicitly geographic/biographical.
+- SCORE: Apply a standard deduction model for each pattern identified.
 
 EXAMPLES:
-- butterfly -> {"syllables": "BUT.TER.FLY", "mnemonic": "A fluttery fly in the butter."}
-- education -> {"syllables": "ED.U.CA.TION", "mnemonic": "Edu is at the start of learning."}
+Input: "Rian tapd sofly on the windo"
+Output: {
+  "corrected": "Rain tapped softly on the window",
+  "explanation": "Identified phonetic patterns (rian, tapd, windo) and omission (sofly).",
+  "score": 85,
+  "mistakes": [
+    {"wrong": "Rian", "correct": "Rain", "reason": "Phonetic: spelling by sound"},
+    {"wrong": "tapd", "correct": "tapped", "reason": "Omission: missing double 'p'"},
+    {"wrong": "sofly", "correct": "softly", "reason": "Phonetic omission of 't'"},
+    {"wrong": "windo", "correct": "window", "reason": "Phonetic vowel shift"}
+  ]
+}
 
-Output:`;
+Input: "He are a good cat."
+Output: {
+  "corrected": "He is a good cat.",
+  "explanation": "Subject-verb agreement error (Grammar).",
+  "score": 95,
+  "mistakes": [
+    {"wrong": "are", "correct": "is", "reason": "Verb agreement with singular subject 'He'"}
+  ]
+}
+
+Input: "Teh techer rote nots on the wite bord."
+Output: {
+  "corrected": "The teacher wrote notes on the white board.",
+  "explanation": "Identified widespread phonetic vowel/consonant omissions (techer, rote, nots, wite, bord).",
+  "score": 75,
+  "mistakes": [
+    {"wrong": "Teh", "correct": "The", "reason": "Sequence transposition"},
+    {"wrong": "techer", "correct": "teacher", "reason": "Phonetic omission"},
+    {"wrong": "rote", "correct": "wrote", "reason": "Phonetic: missing silent 'w'"},
+    {"wrong": "nots", "correct": "notes", "reason": "Phonetic: missing silent 'e'"},
+    {"wrong": "wite", "correct": "white", "reason": "Phonetic: missing silent 'h'"},
+    {"wrong": "bord", "correct": "board", "reason": "Phonetic: missing vowel 'a'"}
+  ]
+}
+
+Input: "Afer finshing the assingment, he carefly orginized the documnts in his backpak."
+Output: {
+  "corrected": "After finishing the assignment, he carefully organized the documents in his backpack.",
+  "explanation": "Decoded multiple phonetic omission patterns (carefly, documnts, backpak) and spelling errors.",
+  "score": 65,
+  "mistakes": [
+    {"wrong": "Afer", "correct": "After", "reason": "Consonant omission 't'"},
+    {"wrong": "finshing", "correct": "finishing", "reason": "Vowel omission 'i'"},
+    {"wrong": "assingment", "correct": "assignment", "reason": "Letter sequence 'ss'"},
+    {"wrong": "carefly", "correct": "carefully", "reason": "Multi-syllable omission"},
+    {"wrong": "orginized", "correct": "organized", "reason": "Vowel shift 'i' to 'a'"},
+    {"wrong": "documnts", "correct": "documents", "reason": "Vowel omission 'u'"},
+    {"wrong": "backpak", "correct": "backpack", "reason": "Omission 'ck'"}
+  ]
+}
+
+Input: "Wile waling threw the crouded markeplace, she acidently misplased her walet and cudent rember wer she last saw it"
+Output: {
+  "corrected": "While walking through the crowded marketplace, she accidentally misplaced her wallet and couldn't remember where she last saw it",
+  "explanation": "Mastered extremely complex dyslexic patterns including multi-syllable omissions (acidently, rember) and high-distortion phonetics (cudent, markeplace).",
+  "score": 55,
+  "mistakes": [
+    {"wrong": "Wile", "correct": "While", "reason": "Phonetic omission 'h'"},
+    {"wrong": "waling", "correct": "walking", "reason": "Consonant omission 'k'"},
+    {"wrong": "threw", "correct": "through", "reason": "Homophone confusion"},
+    {"wrong": "crouded", "correct": "crowded", "reason": "Vowel shift 'u' to 'w'"},
+    {"wrong": "markeplace", "correct": "marketplace", "reason": "Syllable omission"},
+    {"wrong": "acidently", "correct": "accidentally", "reason": "Major syllable omission"},
+    {"wrong": "misplased", "correct": "misplaced", "reason": "Phonetic shift 's' to 'ce'"},
+    {"wrong": "walet", "correct": "wallet", "reason": "Consonant omission 'l'"},
+    {"wrong": "cudent", "correct": "couldn't", "reason": "Severe phonetic distortion"},
+    {"wrong": "rember", "correct": "remember", "reason": "Syllable omission"},
+    {"wrong": "wer", "correct": "where", "reason": "Phonetic omission 'h'"}
+  ]
+}
+
+Only return JSON.`;
+
+export const getFlashModel = () => genAI.getGenerativeModel({
+  model: MODEL_FLASH,
+  systemInstruction: systemPrompt
+});
+export const getProModel = () => genAI.getGenerativeModel({
+  model: MODEL_PRO,
+  systemInstruction: systemPrompt
+});
+export const getUploadModel = () => genAI.getGenerativeModel({
+  model: MODEL_UPLOAD,
+  systemInstruction: systemPrompt
+});
+
+// Internal raw AI call to avoid circular dependencies
+export const callGeminiAI = async (content, contentType = 'text') => {
+  if (!GEMINI_API_KEY) throw new Error('Gemini API Key missing');
 
   try {
-    console.log(`[Word Lab] API Call: "${normalizedWord}" (gemini-flash-latest)`);
+    const model = getUploadModel();
+    let result;
 
-    const result = await Promise.race([
-      model.generateContent(prompt),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), TIMEOUT_MS)
-      )
-    ]);
-
-    const response = await result.response;
-    const text = response.text();
-    console.log(`[Word Lab] AI Response:`, text);
-
-    const jsonMatch = text.match(/\{.*\}/s);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      // Store in cache for future requests
-      wordLabCache.set(normalizedWord, parsed);
-      return parsed;
+    if (contentType === 'image') {
+      const base64Data = content.split(',')[1] || content;
+      result = await model.generateContent([
+        { inlineData: { data: base64Data, mimeType: "image/jpeg" } },
+        "Analyze this writing for dyslexia patterns. Return ONLY JSON."
+      ]);
+    } else {
+      result = await model.generateContent(`INPUT: "${content}"`);
     }
 
-    throw new Error("No JSON found in response: " + text.substring(0, 50));
+    const text = result.response.text();
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      return JSON.parse(jsonMatch[0].trim());
+    }
+    throw new Error('No valid JSON returned');
   } catch (error) {
-    console.error(`[Word Lab] Error:`, error);
+    console.error('[AI RAW FETCH FAILED]:', error.message);
+    throw error;
+  }
+};
+
+import { orchestrateAnalysis } from './correctionEngine.js';
+
+export const analyzeWriting = async (content, contentType = 'text', userId = 'anonymous') => {
+  if (!content) return null;
+
+  try {
+    if (contentType === 'text') {
+      return await orchestrateAnalysis(content, userId);
+    }
+
+    // For images, we still rely on Gemini's Vision capabilities directly
+    if (contentType === 'image') {
+      return await callGeminiAI(content, 'image');
+    }
+
+    throw new Error('Unsupported content type');
+  } catch (error) {
+    console.error('[ANALYSIS ENTRY POINT FAILED]:', error.message);
     return {
-      syllables: normalizedWord,
-      mnemonic: `ERROR: ${error.message.includes('429') ? 'Quota Exceeded. Please try again or use a new key.' : error.message}`
+      corrected: content,
+      explanation: "Analysis encountered an error. Using local fallback.",
+      mistakes: [],
+      score: 100
     };
   }
 };
 
-// Quiz Generator: Create a 3-question quiz from text
-export const generateQuiz = async (text) => {
-  if (!GEMINI_API_KEY) {
-    throw new Error('Gemini API key not configured');
-  }
-
-  const model = getFlashModel();
-
-  const prompt = `You are an educational specialist. Create a 3-question multiple-choice quiz to check comprehension of the following text for a dyslexic student. 
-Keep questions simple and direct.
-
-Format your response as a JSON array of objects:
-[
-  {
-    "question": "Simple question?",
-    "options": ["Option A", "Option B", "Option C"],
-    "correctIndex": 0
-  },
-  ...
-]
-
-Text:
-${text}`;
-
+export const simplifyText = async (text, usePro = false) => {
   try {
-    const result = await Promise.race([
-      model.generateContent(prompt),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), TIMEOUT_MS)
-      )
-    ]);
-
-    const response = await result.response;
-    const responseText = response.text();
-
-    const jsonMatch = responseText.match(/\[.*\]/s);
-    if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
-    }
-
-    throw new Error('Failed to generate valid quiz format');
+    const model = usePro ? getProModel() : getFlashModel();
+    const result = await model.generateContent(`Simplify:\n${text}`);
+    return { simplified: result.response.text() };
   } catch (error) {
-    console.error('Gemini Quiz error:', error);
-    throw new Error(`Failed to generate quiz: ${error.message}`);
+    console.error('[SIMPLIFY FAILED]:', error.message);
+    return { simplified: text };
   }
 };
 
+export const generateAudioText = async (text) => {
+  const model = getFlashModel();
+  const result = await model.generateContent(`Optimize for audio:\n${text}`);
+  return { audioOptimized: result.response.text() };
+};
+
+export const analyzeContent = async (content) => {
+  const model = getFlashModel();
+  const result = await model.generateContent(`Analyze:\n${content}`);
+  return { analysis: result.response.text() };
+};
+
+export const generateQuiz = async (text) => {
+  try {
+    const model = getFlashModel();
+    const result = await model.generateContent(`MCQ quiz:\n${text}`);
+    const json = result.response.text().match(/\[.*\]/s);
+    return json ? JSON.parse(json[0]) : [];
+  } catch {
+    return [];
+  }
+};
+
+// Renamed to match route usage and provided structured data
+export const getWordBreakdown = async (word) => {
+  try {
+    const model = getFlashModel();
+    const prompt = `Act as a reading specialist. Breakdown the word "${word}" into phonetic syllables separated by dots (•). Also provide a funny, memorable mnemonic (memory tip) to help a child remember how to spell it.
+
+Return ONLY JSON:
+{
+  "syllables": "syl•la•ble",
+  "mnemonic": "Memories Never Ever Not On Cloud Nine"
+}`;
+
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    const json = text.match(/\{.*\}/s);
+    if (json) return JSON.parse(json[0]);
+    return { syllables: word, mnemonic: "Keep practicing! You're doing great." };
+  } catch (err) {
+    if (err.message?.includes('429')) {
+      console.error('[WORD LAB QUOTA EXCEEDED]:', err.message);
+      return {
+        syllables: word,
+        mnemonic: "Word Lab is resting right now (Project Quota Limit). Try again with a new API key!"
+      };
+    }
+    console.error('Word Lab AI failed:', err);
+    return { syllables: word, mnemonic: "" };
+  }
+};

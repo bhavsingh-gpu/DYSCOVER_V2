@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser, signUpUser } from '../services/firebase';
+import { saveUserProgress } from '../services/api';
 import Footer from '../components/Footer';
 import '../pages/Landing.css';
 
@@ -53,6 +54,13 @@ const Login = () => {
         role: result.backendUser?.role || role,
         displayName: result.backendUser?.name || name || result.user.displayName || ''
       }));
+
+      // Auto-log activity on successful login/signup
+      saveUserProgress({
+        level: 1,
+        practiceType: 'visit',
+        notes: isSignUp ? 'New account created' : 'User signed in'
+      }).catch(err => console.error('Failed to log login activity:', err));
 
       // Redirect to dashboard after short delay
       setTimeout(() => {

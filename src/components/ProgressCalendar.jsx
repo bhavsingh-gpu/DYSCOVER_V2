@@ -3,24 +3,43 @@ import { useRef, useMemo, useState, useEffect } from 'react';
 import { getCurrentUser, getUserProgress, saveUserProgress } from '../services/api';
 
 const levelClasses = [
-  'bg-white/90 dark:bg-[#1E2230]',
-  'bg-orange-500/90 text-white shadow-sm dark:bg-orange-600/95', // Level 1 is now Orange
-  'bg-accentSoft/80 dark:bg-accentSoft/80',
-  'bg-accent/90 text-white shadow-sm dark:bg-accent/95'
+  'bg-white/90 dark:bg-[#1E2230]',                     // Level 0: Rest
+  'bg-[#FFE0C7] text-orange-900 shadow-sm',            // Level 1: Soft Orange (accentSoft)
+  'bg-orange-500 text-white shadow-sm',                // Level 2: Medium Orange
+  'bg-orange-700 text-white shadow-sm'                 // Level 3: Intense Orange
 ];
 
 const weekdayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const levelColors = [
   'bg-slate-400/50', // No practice
-  'bg-orange-500',   // Level 1 (Activity)
-  'bg-orange-600',   // Level 2 (Steady)
+  'bg-[#FF8A4A]',   // Level 1 (Activity - using accent)
+  'bg-orange-500',   // Level 2 (Steady)
   'bg-orange-700'    // Level 3 (Intense)
 ];
 
 // Helper to get local date key YYYY-MM-DD
 const getLocalDateKey = (date) => {
-  const d = new Date(date);
+  if (!date) return null;
+
+  let d;
+  // Handle Firestore Timestamp object (both {seconds} and {_seconds} formats)
+  if (typeof date === 'object') {
+    if (date.seconds !== undefined) {
+      d = new Date(date.seconds * 1000);
+    } else if (date._seconds !== undefined) {
+      d = new Date(date._seconds * 1000);
+    } else if (date.toDate instanceof Function) {
+      d = date.toDate();
+    } else {
+      d = new Date(date);
+    }
+  } else {
+    d = new Date(date);
+  }
+
+  if (isNaN(d.getTime())) return null;
+
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');

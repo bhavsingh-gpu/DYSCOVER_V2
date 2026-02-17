@@ -45,3 +45,15 @@ dist-ssr
 FIREBASE_KEY_DYSCOVER.json
 service-account.json
 credentials.json
+
+# Redundant folders
+UN_NECCESSARRY/
+SHOOTING_STAR/
+DOCK_NAVBAR/
+CLICK_SPARK/
+DOCS/
+ICONS/
+LANDING_BITS/
+MAGIC_BENTO/
+TXT/
+DYSCOVER/

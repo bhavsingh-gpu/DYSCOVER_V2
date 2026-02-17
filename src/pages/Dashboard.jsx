@@ -73,20 +73,23 @@ const Dashboard = () => {
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-dysGray/50 uppercase">Practice Streak</p>
+                    <p className="text-[10px] font-bold text-dysGray/80 dark:text-dysGray/50 uppercase">Practice Streak</p>
                     <p className="text-2xl font-black text-orange-500">{stats?.currentStreak || 0} <span className="text-xs italic opacity-60">days</span></p>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-dysGray/50 uppercase">Analysis Level</p>
-                    <p className="text-2xl font-black">{stats?.averageLevel || 0}<span className="text-xs text-dysGray">.0</span></p>
+                    <p className="text-[10px] font-bold text-dysGray/80 dark:text-dysGray/50 uppercase">Dyscover Stars</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-2xl font-black text-yellow-500">{stats?.totalStars || 0}</p>
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-yellow-400/20 text-yellow-500 text-xs shadow-inner">⭐</span>
+                    </div>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-dysGray/50 uppercase">Vocab Lab</p>
-                    <p className="text-2xl font-black text-[#F97316]">{stats?.practiceTypes?.['word-lab'] || 0}</p>
+                    <p className="text-[10px] font-bold text-dysGray/80 dark:text-dysGray/50 uppercase">Total Points</p>
+                    <p className="text-2xl font-black text-blue-500">{stats?.totalPoints || 0}</p>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-[10px] font-bold text-dysGray/50 uppercase">Rank</p>
-                    <p className="text-2xl font-black text-blue-500">{stats?.totalDays > 10 ? 'Advanced' : 'Novice'}</p>
+                    <p className="text-[10px] font-bold text-dysGray/80 dark:text-dysGray/50 uppercase">Rank</p>
+                    <p className="text-2xl font-black text-green-500">{stats?.totalDays > 10 ? 'Advanced' : 'Novice'}</p>
                   </div>
                 </div>
               </div>
@@ -96,36 +99,36 @@ const Dashboard = () => {
           {/* Progress Gauge Card */}
           <BentoCard className="col-span-1 h-full" glowColor="34, 197, 94">
             <div className="flex flex-col items-center justify-center h-full p-4 space-y-6">
-              <CircularGauge solved={stats?.totalSessions || 0} total={365} label="Sessions" />
+              <CircularGauge solved={stats?.totalSessions || 0} total={100} label="Goal Progress" />
               {/* Progress Gauges */}
               <div className="w-full space-y-3">
                 <div className="space-y-1">
                   <div className="flex justify-between text-[10px] font-black uppercase text-green-500">
-                    <span>Reading</span>
-                    <span>{stats?.practiceTypes?.reading || 0}/1500</span>
+                    <span>Reading Journey</span>
+                    <span>{stats?.practiceTypes?.reading || 0}/50</span>
                   </div>
                   <div className="w-full h-1.5 bg-dysGray/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-green-500 transition-all duration-500" style={{ width: `${Math.min(((stats?.practiceTypes?.reading || 0) / 1500) * 100, 100)}%` }}></div>
+                    <div className="h-full bg-green-500 transition-all duration-500" style={{ width: `${Math.min(((stats?.practiceTypes?.reading || 0) / 50) * 100, 100)}%` }}></div>
                   </div>
                 </div>
 
                 <div className="space-y-1">
                   <div className="flex justify-between text-[10px] font-black uppercase text-orange-500">
-                    <span>Analysis & Word Lab</span>
-                    <span>{(stats?.practiceTypes?.analysis || 0) + (stats?.practiceTypes?.['word-lab'] || 0)}/1000</span>
+                    <span>AI Analysis</span>
+                    <span>{stats?.practiceTypes?.analysis || 0}/50</span>
                   </div>
                   <div className="w-full h-1.5 bg-dysGray/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-orange-500 transition-all duration-500" style={{ width: `${Math.min((((stats?.practiceTypes?.analysis || 0) + (stats?.practiceTypes?.['word-lab'] || 0)) / 1000) * 100, 100)}%` }}></div>
+                    <div className="h-full bg-orange-500 transition-all duration-500" style={{ width: `${Math.min(((stats?.practiceTypes?.analysis || 0) / 50) * 100, 100)}%` }}></div>
                   </div>
                 </div>
 
                 <div className="space-y-1">
                   <div className="flex justify-between text-[10px] font-black uppercase text-red-500">
-                    <span>Speech & Quiz</span>
-                    <span>{stats?.practiceTypes?.quiz || 0}/500</span>
+                    <span>Word Lab</span>
+                    <span>{stats?.practiceTypes?.['word-lab'] || 0}/50</span>
                   </div>
                   <div className="w-full h-1.5 bg-dysGray/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-red-500 transition-all duration-500" style={{ width: `${Math.min(((stats?.practiceTypes?.quiz || 0) / 500) * 100, 100)}%` }}></div>
+                    <div className="h-full bg-red-500 transition-all duration-500" style={{ width: `${Math.min(((stats?.practiceTypes?.['word-lab'] || 0) / 50) * 100, 100)}%` }}></div>
                   </div>
                 </div>
               </div>
@@ -143,26 +146,45 @@ const Dashboard = () => {
             </div>
           </BentoCard>
 
-          {/* Routine & Tips Cards */}
+          {/* API Rate Limit Card */}
           <BentoCard className="col-span-1 md:col-span-2" glowColor="139, 92, 246">
-            <div className="p-4 space-y-4">
-              <h3 className="text-sm font-black uppercase tracking-widest text-dysGray/40">Study Experience</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 p-4 rounded-2xl bg-dysGray/5 dark:bg-white/5 border border-dysGray/10">
-                  <span className="text-2xl">☀️</span>
-                  <div>
-                    <p className="font-bold text-sm">Morning Flow</p>
-                    <p className="text-[10px] font-bold text-dysGray">Peak: 8:30 AM</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-4 rounded-2xl bg-dysGray/5 dark:bg-white/5 border border-dysGray/10">
-                  <span className="text-2xl">🎧</span>
-                  <div>
-                    <p className="font-bold text-sm">Focused Audio</p>
-                    <p className="text-[10px] font-bold text-dysGray">Used in 70%</p>
-                  </div>
-                </div>
+            <div className="p-6 space-y-5 flex flex-col justify-center h-full">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-black uppercase tracking-widest text-dysGray/80 dark:text-cream/40">Daily Uploads</h3>
+                <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500 text-[10px] font-black uppercase border border-blue-500/20">Synced</span>
               </div>
+
+              {/* Calculate total AI requests */}
+              {(() => {
+                const aiUsage = stats?.uploadCount || 0;
+                const limit = 50;
+                const percentage = Math.min((aiUsage / limit) * 100, 100);
+
+                return (
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-baseline">
+                        <span className="text-2xl font-black text-ink dark:text-white">
+                          {aiUsage}<span className="text-xs text-dysGray">/{limit}</span>
+                        </span>
+                        <span className="text-[10px] font-bold text-dysGray/80 dark:text-dysGray uppercase">Uploads Today</span>
+                      </div>
+
+                      {/* Linear Progress Bar */}
+                      <div className="w-full h-3 bg-dysGray/10 rounded-full overflow-hidden dark:bg-white/5 border border-dysGray/5">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-1000 ease-out"
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    <p className="text-[10px] leading-relaxed text-dysGray/60 dark:text-cream/40 font-medium">
+                      Your daily upload limit is synced from the server. Use them to analyze and learn effectively!
+                    </p>
+                  </div>
+                );
+              })()}
             </div>
           </BentoCard>
 

@@ -273,12 +273,12 @@ export const BentoCard = ({
     };
   }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor, enableStars]);
 
-  const baseClassName = `magic-bento-card magic-bento-card--text-autohide ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''} ${className}`;
+  const baseClassName = `${className}`;
 
   return (
     <div
       ref={cardRef}
-      className={`${baseClassName} particle-container`}
+      className={`${baseClassName} particle-container ${enableBorderGlow ? 'magic-bento-card--border-glow' : ''}`}
       style={{
         ...style,
         position: 'relative',
@@ -337,7 +337,7 @@ const GlobalSpotlight = ({
         rect && e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
 
       isInsideSection.current = mouseInside || false;
-      const cards = gridRef.current.querySelectorAll('.magic-bento-card');
+      const cards = gridRef.current.querySelectorAll('.particle-container');
 
       if (!mouseInside) {
         gsap.to(spotlightRef.current, {
@@ -398,7 +398,7 @@ const GlobalSpotlight = ({
 
     const handleMouseLeave = () => {
       isInsideSection.current = false;
-      gridRef.current?.querySelectorAll('.magic-bento-card').forEach((card) => {
+      gridRef.current?.querySelectorAll('.particle-container').forEach((card) => {
         card.style.setProperty('--glow-intensity', '0');
       });
       if (spotlightRef.current) {

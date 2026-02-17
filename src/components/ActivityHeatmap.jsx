@@ -6,7 +6,17 @@ const ActivityHeatmap = ({ data = [], totalActiveDays = 0, maxStreak = 0 }) => {
     const activityMap = useMemo(() => {
         const map = {};
         data.forEach(item => {
-            const date = new Date(item.date?.toDate ? item.date.toDate() : item.date);
+            let date;
+            if (item.date?.toDate) {
+                date = item.date.toDate();
+            } else if (item.date?._seconds) {
+                date = new Date(item.date._seconds * 1000);
+            } else {
+                date = new Date(item.date);
+            }
+
+            if (isNaN(date.getTime())) return;
+
             // Use local date string (YYYY-MM-DD) to avoid UTC shifts
             const key = date.getFullYear() + '-' +
                 String(date.getMonth() + 1).padStart(2, '0') + '-' +
@@ -55,9 +65,9 @@ const ActivityHeatmap = ({ data = [], totalActiveDays = 0, maxStreak = 0 }) => {
 
     const getColor = (count) => {
         if (count === 0) return 'bg-dysGray/10 dark:bg-white/5';
-        if (count === 1) return 'bg-orange-500/30';
-        if (count === 2) return 'bg-orange-500/60';
-        return 'bg-orange-500';
+        if (count === 1) return 'bg-[#FFE0C7]'; // Lightest
+        if (count === 2) return 'bg-orange-500'; // Medium
+        return 'bg-orange-700'; // Darkest
     };
 
     const monthLabels = useMemo(() => {

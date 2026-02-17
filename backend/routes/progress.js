@@ -10,10 +10,21 @@ router.get('/:userId', async (req, res) => {
     const { userId } = req.params;
     const progress = await getUserProgress(userId);
 
+    // Format dates for frontend consumption
+    const formattedProgress = progress.map(p => {
+      let dateStr = p.date;
+      if (p.date?.toDate) {
+        dateStr = p.date.toDate().toISOString();
+      } else if (p.date?._seconds) {
+        dateStr = new Date(p.date._seconds * 1000).toISOString();
+      }
+      return { ...p, date: dateStr };
+    });
+
     res.json({
       success: true,
-      progress,
-      count: progress.length
+      progress: formattedProgress,
+      count: formattedProgress.length
     });
   } catch (error) {
     console.error('Error fetching progress:', error);
@@ -63,7 +74,15 @@ router.post('/:userId', async (req, res) => {
 router.get('/:userId/stats', async (req, res) => {
   try {
     const { userId } = req.params;
-    const progress = await getUserProgress(userId);
+
+    // Fetch user progress and user document stats in parallel
+    const [progress, userSnap] = await Promise.all([
+      getUserProgress(userId),
+      db.collection('users').doc(userId).get()
+    ]);
+
+    const userData = userSnap.exists ? userSnap.data() : {};
+    const userStats = userData.stats || {};
 
     // Calculate statistics
     const totalSessions = progress.length;
@@ -124,10 +143,15 @@ router.get('/:userId/stats', async (req, res) => {
       success: true,
       stats: {
         totalSessions,
-        totalDays, // Distinct days
+        totalDays,
         averageLevel: Math.round(averageLevel * 10) / 10,
         currentStreak: streak,
-        practiceTypes
+        practiceTypes,
+        // Include real user stats from the document
+        totalPoints: userStats.totalPoints || 0,
+        totalStars: userStats.totalStars || 0,
+        lastActivity: userStats.lastActivity,
+        uploadCount: userStats.uploadCount || 0
       }
     });
   } catch (error) {
