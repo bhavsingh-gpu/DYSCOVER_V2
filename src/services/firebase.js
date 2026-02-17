@@ -43,7 +43,10 @@ export const loginUser = async (email, password, role) => {
     // 3. Verify with backend & sync user data
     const response = await fetch(`${API_BASE}/auth/verify-token`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`
+        },
         body: JSON.stringify({ idToken, role })
     });
 
@@ -81,7 +84,10 @@ export const signUpUser = async (email, password, role, name) => {
     // 4. Verify with backend (this will also create the Firestore doc)
     const response = await fetch(`${API_BASE}/auth/verify-token`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${idToken}`
+        },
         body: JSON.stringify({ idToken, role, name })
     });
 
