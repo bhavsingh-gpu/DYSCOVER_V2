@@ -34,9 +34,11 @@ try {
     }
   }
 
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  });
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount)
+    });
+  }
 
   console.log('✅ Firebase Admin SDK initialized successfully');
 } catch (error) {
