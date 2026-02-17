@@ -12,44 +12,28 @@ const __dirname = dirname(__filename);
 // Initialize Firebase Admin SDK
 if (!admin.apps.length) {
   try {
-    let serviceAccount;
-    // Priority 1: Individual Env Vars (Recommended for Vercel)
     const projectId = process.env.FIREBASE_PROJECT_ID;
     const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
     const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
 
     if (projectId && clientEmail && privateKey) {
-      serviceAccount = { projectId, clientEmail, privateKey };
-      console.log('✅ Using Firebase service account from individual Env Vars');
-    }
-    // Priority 2: Full JSON string from Env Var
-    else if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-      try {
+      admin.initializeApp({
+        credential: admin.credential.cert({ projectId, clientEmail, privateKey })
+      });
+      console.log('✅ Firebase Admin initialized via individual Env Vars (Backend Service)');
+    } else {
+      // Fallback: This will still look for the JSON file or JSON env var for local dev
+      let serviceAccount;
+      if (process.env.FIREBASE_SERVICE_ACCOUNT) {
         serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-        console.log('✅ Using Firebase service account from JSON Env Var');
-      } catch (parseError) {
-        console.warn('⚠️  Failed to parse FIREBASE_SERVICE_ACCOUNT from env');
-      }
-    }
-    // Priority 3: JSON File (Local Dev Only)
-    else {
-      try {
+      } else {
         const keyPath = join(__dirname, '..', 'FIREBASE_KEY_DYSCOVER.json');
-        const keyFile = readFileSync(keyPath, 'utf8');
-        serviceAccount = JSON.parse(keyFile);
-        console.log('✅ Using Firebase service account from JSON file');
-      } catch (fileError) {
-        // Safe check later
+        serviceAccount = JSON.parse(readFileSync(keyPath, 'utf8'));
       }
-    }
 
-    if (serviceAccount) {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount)
       });
-      console.log('✅ Firebase Admin SDK initialized successfully');
-    } else {
-      console.error('❌ Firebase service account missing. Check Vercel Env Vars.');
     }
   } catch (error) {
     console.error('❌ Firebase initialization failed:', error.message);
@@ -58,6 +42,7 @@ if (!admin.apps.length) {
 
 export const db = admin.firestore();
 export const auth = admin.auth();
+
 
 // Helper functions for Firestore operations
 export const getUserProgress = async (userId) => {
