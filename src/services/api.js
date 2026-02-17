@@ -1,5 +1,5 @@
 // Frontend API service for DYSCOVER backend
-const API_BASE = import.meta.env.PROD
+const API_BASE = (import.meta.env.PROD || window.location.hostname !== 'localhost')
     ? '/api'
     : 'http://localhost:3001/api';
 

@@ -24,7 +24,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 // Backend API base URL
-const API_BASE = import.meta.env.PROD
+const API_BASE = (import.meta.env.PROD || window.location.hostname !== 'localhost')
     ? '/api'
     : 'http://localhost:3001/api';
 
